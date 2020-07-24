@@ -2,7 +2,6 @@ package badmitry.hellogeekbrains;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,8 +30,4 @@ Random random = new Random();
             imageView.setImageResource(R.drawable.rain);
         }
     }
-//    ImageView imageView = findViewById(R.id.image);
-//    ActionBar.LayoutParams param = (ActionBar.LayoutParams) imageView.getLayoutParams();
-//    param.width = 120;
-//    imageView.
 }

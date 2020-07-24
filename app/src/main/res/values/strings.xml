@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">helloGeekbrains</string>
-    <string name="show_weather">weather</string>
-    <string name="sity">MySity</string>
-    <string name="rainy">rainy</string>
-    <string name="sun">sun</string>
+    <string name="app_name" translatable="false">helloGeekbrains</string>
+    <string name="show_weather" translatable="false">weather</string>
+    <string name="sity" translatable="false">MySity</string>
+    <string name="rainy" translatable="false">rainy</string>
+    <string name="sun" translatable="false">sun</string>
+    <string name="sityRu" translatable="false">город</string>
 </resources>
