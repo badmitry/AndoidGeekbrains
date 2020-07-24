@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">helloGeekbrains</string>
+    <string name="show_weather">weather</string>
+    <string name="sity">MySity</string>
+    <string name="rainy">rainy</string>
+    <string name="sun">sun</string>
+</resources>
