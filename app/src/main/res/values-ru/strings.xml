@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">привет</string>
+    <string name="show_weather" translatable="false">погода</string>
+    <string name="sity" translatable="false">Мой город</string>
+    <string name="rainy" translatable="false">дождливо</string>
+    <string name="sun" translatable="false">солнечно</string>
+</resources>

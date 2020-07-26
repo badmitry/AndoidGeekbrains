@@ -63,11 +63,11 @@
         android:id="@+id/image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="424dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="572dp"
+        android:layout_marginTop="12dp"
         android:src="@drawable/sun"
         app:layout_constraintHeight_percent="10"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/button"
         tools:ignore="MissingConstraints" />
 
