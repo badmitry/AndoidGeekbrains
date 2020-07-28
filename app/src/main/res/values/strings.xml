@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">helloGeekbrains</string>
-    <string name="show_weather" translatable="false">weather</string>
-    <string name="sity" translatable="false">MySity</string>
+    <string name="show_weather" translatable="false">Show weather</string>
+    <string name="сity" translatable="false">My Сity</string>
     <string name="rainy" translatable="false">rainy</string>
     <string name="sun" translatable="false">sun</string>
-    <string name="sityRu" translatable="false">город</string>
+    <string name="reload">reload</string>
 </resources>

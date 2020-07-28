@@ -13,41 +13,53 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private Random random = new Random();
     private Button button;
-    private TextView textView;
-    private TextView textView3;
+    private TextView textWeather;
+    private TextView temperature;
+    private TextView сity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-        setOnButtonClk();
+        setOnButtonClkBehaviour();
+        setOnСityClkBehaviour();
+    }
+
+    private void setOnСityClkBehaviour() {
+        сity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void initViews() {
         button = findViewById(R.id.button);
-        textView = findViewById(R.id.textView);
-        textView3 = findViewById(R.id.textView3);
+        temperature = findViewById(R.id.temperature);
+        textWeather = findViewById(R.id.textWeather);
+        сity = findViewById(R.id.MyСity);
+
     }
 
-    private void setOnButtonClk() {
+    private void setOnButtonClkBehaviour() {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int i = random.nextInt(2);
                 int t = random.nextInt(15);
-                TextView textView = (TextView) findViewById(R.id.textView2);
-                TextView textView3 = (TextView) findViewById(R.id.textView3);
+                button.setText(R.string.reload);
+                TextView textWeather = (TextView) findViewById(R.id.textWeather);
+                TextView temperature = (TextView) findViewById(R.id.temperature);
                 ImageView imageView = (ImageView) findViewById(R.id.image);
                 System.out.println(i);
-                String weather;
+                temperature.setText((t + 15) + "*C");
                 if (i == 1) {
-                    textView.setText(R.string.sun);
-                    textView3.setText((t + 15) + "*C");
+                    textWeather.setText(R.string.sun);
                     imageView.setImageResource(R.drawable.sun);
                 } else {
-                    textView.setText(R.string.rainy);
-                    textView3.setText((t + 15) + "*C");
+                    textWeather.setText(R.string.rainy);
                     imageView.setImageResource(R.drawable.rain);
                 }
             }
