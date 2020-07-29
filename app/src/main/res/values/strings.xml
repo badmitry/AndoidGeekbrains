@@ -1,8 +1,19 @@
 <resources>
-    <string name="app_name" translatable="false">helloGeekbrains</string>
+    <string name="app_name" translatable="false">My Weather</string>
     <string name="show_weather" translatable="false">Show weather</string>
     <string name="сity" translatable="false">My Сity</string>
     <string name="rainy" translatable="false">rainy</string>
     <string name="sun" translatable="false">sun</string>
     <string name="reload">reload</string>
+    <string name="input_your_city">input your city</string>
+    <string name="speed_of_wind">Speed:</string>
+    <string name="pressure">Pressure:</string>
+    <string name="chose_settings">Chose parameters:</string>
+    <string name="buttonSettings">Settings</string>
+    <string name="ok">Ok</string>
+    <string name="grad">*C</string>
+    <string name="mm">mm</string>
+    <string name="mInS">m/s</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="white_theme">Light theme</string>
 </resources>

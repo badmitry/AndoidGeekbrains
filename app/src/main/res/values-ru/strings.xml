@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">привет</string>
+    <string name="app_name" translatable="false">Моя погода</string>
     <string name="show_weather" translatable="false">показать</string>
     <string name="сity" translatable="false">Мой город</string>
-    <string name="rainy" translatable="false">дождливо</string>
+    <string name="rainy" translatable="false">дождь</string>
     <string name="sun" translatable="false">солнечно</string>
     <string name="reload">обновить</string>
+    <string name="input_your_city">введите Ваш город</string>
+    <string name="speed_of_wind">Скорость:</string>
+    <string name="pressure">Давление:</string>
+    <string name="chose_settings">Выберите элементы:</string>
+    <string name="buttonSettings">Настройки</string>
+    <string name="ok">Принять</string>
+    <string name="grad">*C</string>
+    <string name="mm">мм</string>
+    <string name="mInS">м/с</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="white_theme">Светлая тема</string>
 </resources>
