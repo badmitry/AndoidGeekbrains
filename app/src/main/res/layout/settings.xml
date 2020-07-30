@@ -20,14 +20,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/speed_of_wind"
-        android:textSize="30sp"></CheckBox>
+        android:textSize="30sp"/>
 
     <CheckBox
         android:id="@+id/checkBoxPressure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pressure"
-        android:textSize="30sp"></CheckBox>
+        android:textSize="30sp"/>
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -41,7 +41,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/white_theme">
-            android:defaultFocusHighlightEnabled="true">
         </RadioButton>
     </RadioGroup>
 
