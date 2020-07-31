@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,6 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="70dp"
         android:text="@string/show_weather"
         app:layout_constraintHorizontal_weight="0.7"
@@ -83,21 +85,21 @@
         app:layout_constraintHorizontal_weight="0.3"
         app:layout_constraintStart_toEndOf="@id/textViewTemperature"
         app:layout_constraintTop_toBottomOf="@+id/buttonSettings"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="ContentDescription,MissingConstraints"/>
 
     <TextView
         android:id="@+id/textViewSpeedWind"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@id/textViewPressure"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSpeedWindSign" />
+        app:layout_constraintStart_toEndOf="@id/textViewSpeedWindSign"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPressureSign" />
 
     <TextView
         android:id="@+id/textViewPressure"
@@ -110,12 +112,12 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.5"
-        app:layout_constraintStart_toEndOf="@id/textViewSpeedWind"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPressureSign" />
+        app:layout_constraintStart_toEndOf="@id/textViewPressureSign"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTemperature" />
 
     <TextView
         android:id="@+id/textViewSpeedWindSign"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
@@ -123,24 +125,22 @@
         android:text="@string/speed_of_wind"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@id/textViewPressureSign"
-        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintEnd_toStartOf="@id/textViewSpeedWind"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWeather" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPressure" />
 
     <TextView
         android:id="@+id/textViewPressureSign"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/pressure"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="0.5"
-        app:layout_constraintStart_toEndOf="@id/textViewSpeedWindSign"
+        app:layout_constraintEnd_toStartOf="@id/textViewPressure"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWeather" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

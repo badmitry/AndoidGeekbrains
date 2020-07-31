@@ -1,5 +1,6 @@
 package badmitry.hellogeekbrains;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -28,41 +30,92 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPressureSign;
     private TextView textViewSpeedWind;
     private TextView textViewPressure;
+    private SingletonForSaveState singletonForSaveState;
+    private int isRain;
 
     private EditText editTextInputCity;
-    private String city;
-    private String[] citys = {"Moscow", "SP", "Vidnoe", "Kazan", "Vladivostok", "Anadir",
-            "Samara", "Murmansk", "Sochi", "Anapa"};
 
     private Button buttonOk;
     private CheckBox checkBoxSpeedOfWind;
     private CheckBox checkBoxPressure;
-    private boolean speedWind = false;
-    private boolean pressure = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startCreateMainScreen();
+        Log.d("!!!", "onCreate: " + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
+        Log.d("!!!", "onStart: " + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
+        Log.d("!!!", "onResume: " + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
+        Log.d("!!!", "onPause: " + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
+        Log.d("!!!", "onStop: " + System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
+        Log.d("!!!", "onDestroy: " + System.currentTimeMillis());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("isRain", isRain);
+        outState.putSerializable("SingletonForSaveState", SingletonForSaveState.getInstance());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isRain = savedInstanceState.getInt("isRain");
+        SingletonForSaveState singletonForSaveState =
+                (SingletonForSaveState) savedInstanceState.getSerializable("SingletonForSaveState");
+        showWeather();
     }
 
     private void startCreateMainScreen() {
+        singletonForSaveState = SingletonForSaveState.getInstance();
         setContentView(R.layout.activity_main);
         initViews();
-        setOnButtonClkBehaviour();
+        setOnShowWeatherClkBehaviour();
         setOnСityClkBehaviour();
         setOnButtonSettingsClkBehaviour();
-        if (city != null) {
-            textViewCity.setText(city);
+        showWeather();
+        if (singletonForSaveState.getCity() != null) {
+            textViewCity.setText(singletonForSaveState.getCity());
         }
-        if (speedWind) {
+        if (singletonForSaveState.isSpeedWind()) {
             textViewSpeedWind.setVisibility(View.VISIBLE);
             textViewSpeedWindSign.setVisibility(View.VISIBLE);
         } else {
             textViewSpeedWind.setVisibility(View.INVISIBLE);
             textViewSpeedWindSign.setVisibility(View.INVISIBLE);
         }
-        if (pressure) {
+        if (singletonForSaveState.isPressure()) {
             textViewPressure.setVisibility(View.VISIBLE);
             textViewPressureSign.setVisibility(View.VISIBLE);
         } else {
@@ -85,33 +138,36 @@ public class MainActivity extends AppCompatActivity {
         Log.d("initViews", "ok");
     }
 
-    private void setOnButtonClkBehaviour() {
+    private void setOnShowWeatherClkBehaviour() {
         buttonShowWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickOnButtonShowWeather();
+                isRain = (random.nextInt(2) + 1);
+                int t = random.nextInt(15);
+                buttonShowWeather.setText(R.string.reload);
+                singletonForSaveState.setValueOfTemperature(t + 15);
+                singletonForSaveState.setValueOfSpeedOfWind(t/2);
+                singletonForSaveState.setValueOfPressure(100 + t / 2);
+                showWeather();
             }
         });
     }
 
     @SuppressLint("SetTextI18n")
-    private void clickOnButtonShowWeather() {
-        int i = random.nextInt(2);
-        int t = random.nextInt(15);
-        buttonShowWeather.setText(R.string.reload);
-        textViewTemperature.setText((t + 15) + getString(R.string.grad));
-        textViewPressure.setText((100 + t * 2) + getString(R.string.mm));
-        textViewSpeedWind.setText((t / 2) + getString(R.string.mInS));
-        if (i == 1) {
+    private void showWeather() {
+        textViewTemperature.setText(singletonForSaveState.getValueOfTemperature() + getString(R.string.grad));
+        textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
+        textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
+        if (isRain == 1) {
             textViewWeather.setText(R.string.sun);
             imageViewWeather.setImageResource(R.drawable.sun);
-        } else {
+        } else if (isRain == 2) {
             textViewWeather.setText(R.string.rainy);
             imageViewWeather.setImageResource(R.drawable.rain);
         }
     }
 
-    //Choese city
+    //Choose city
 
     private void setOnСityClkBehaviour() {
         textViewCity.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +177,10 @@ public class MainActivity extends AppCompatActivity {
                 setEditTextFromChoseCityBehavior();
                 LinearLayout linearLayout = findViewById(R.id.linearLayoutInScroll);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
-                for (int i = 0; i < citys.length; i++) {
+                String[] cities = singletonForSaveState.getCities();
+                for (int i = 0; i < cities.length; i++) {
                     final TextView textView = new TextView(getApplicationContext());
-                    textView.setText(citys[i]);
+                    textView.setText(cities[i]);
                     textView.setTextSize(50);
                     linearLayout.addView(textView);
                     textView.setOnClickListener(new View.OnClickListener() {
@@ -156,9 +213,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeCityOnMainLayout(String text) {
         setContentView(R.layout.activity_main);
-        city = text;
+        singletonForSaveState.setCity(text);
         startCreateMainScreen();
-        clickOnButtonShowWeather();
+        showWeather();
     }
 
     //Settings
@@ -167,10 +224,10 @@ public class MainActivity extends AppCompatActivity {
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                speedWind = checkBoxSpeedOfWind.isChecked();
-                pressure = checkBoxPressure.isChecked();
+                singletonForSaveState.setSpeedWind(checkBoxSpeedOfWind.isChecked());
+                singletonForSaveState.setPressure(checkBoxPressure.isChecked());
                 startCreateMainScreen();
-                clickOnButtonShowWeather();
+                showWeather();
             }
         });
     }
@@ -183,7 +240,19 @@ public class MainActivity extends AppCompatActivity {
                 buttonOk = findViewById(R.id.buttonOk);
                 checkBoxSpeedOfWind = findViewById(R.id.checkBoxSpeedOfWind);
                 checkBoxPressure = findViewById(R.id.checkBoxPressure);
+                if (singletonForSaveState.isPressure()){
+                    checkBoxPressure.setChecked(true);
+                }
+                if (singletonForSaveState.isSpeedWind()){
+                    checkBoxSpeedOfWind.setChecked(true);
+                }
                 setOnButtonOkClkBehaviour();
+                if (singletonForSaveState.isPressure()){
+                    checkBoxPressure.isChecked();
+                }
+                if (singletonForSaveState.isSpeedWind()){
+                    checkBoxSpeedOfWind.isChecked();
+                }
             }
         });
     }
