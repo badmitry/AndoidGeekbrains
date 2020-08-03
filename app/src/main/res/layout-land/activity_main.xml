@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/myСity"
+        android:id="@+id/myCity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -33,7 +33,7 @@
         app:layout_constraintHorizontal_weight="0.7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/buttonSettings"
-        app:layout_constraintTop_toBottomOf="@+id/myСity"
+        app:layout_constraintTop_toBottomOf="@+id/myCity"
         tools:ignore="MissingConstraints,OnClick" />
 
     <Button
@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonShowWeather"
-        app:layout_constraintTop_toBottomOf="@+id/myСity"
+        app:layout_constraintTop_toBottomOf="@+id/myCity"
         tools:ignore="MissingConstraints,OnClick" />
 
     <TextView

@@ -2,7 +2,6 @@ package badmitry.hellogeekbrains;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewPressure;
     private SingletonForSaveState singletonForSaveState;
     private int isRain;
+    private boolean isMainLayout;
 
     private EditText editTextInputCity;
 
@@ -43,7 +42,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startCreateMainScreen();
-        Log.d("!!!", "onCreate: " + System.currentTimeMillis());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isMainLayout) {
+            super.onBackPressed();
+        } else {
+            startCreateMainScreen();
+        }
     }
 
     @Override
@@ -94,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startCreateMainScreen() {
+        isMainLayout = true;
         singletonForSaveState = SingletonForSaveState.getInstance();
         setContentView(R.layout.activity_main);
         initViews();
@@ -169,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         textViewCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMainLayout = false;
                 setContentView(R.layout.city);
                 setEditTextFromChoseCityBehavior();
                 LinearLayout linearLayout = findViewById(R.id.linearLayoutInScroll);
@@ -232,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         buttonSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isMainLayout = false;
                 setContentView(R.layout.settings);
                 buttonOk = findViewById(R.id.buttonOk);
                 checkBoxSpeedOfWind = findViewById(R.id.checkBoxSpeedOfWind);
