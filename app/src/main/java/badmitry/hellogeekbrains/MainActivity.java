@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("isRain", isRain);
-        outState.putSerializable("SingletonForSaveState", SingletonForSaveState.getInstance());
         super.onSaveInstanceState(outState);
     }
 
@@ -92,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         isRain = savedInstanceState.getInt("isRain");
-        SingletonForSaveState singletonForSaveState =
-                (SingletonForSaveState) savedInstanceState.getSerializable("SingletonForSaveState");
-        showWeather();
     }
 
     private void startCreateMainScreen() {
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
         setOnShowWeatherClkBehaviour();
-        setOnСityClkBehaviour();
+        setOnCityClkBehaviour();
         setOnButtonSettingsClkBehaviour();
         showWeather();
         if (singletonForSaveState.getCity() != null) {
@@ -128,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
         buttonShowWeather = findViewById(R.id.buttonShowWeather);
         textViewTemperature = findViewById(R.id.textViewTemperature);
         textViewWeather = findViewById(R.id.textViewWeather);
-        textViewCity = findViewById(R.id.MyСity);
-        imageViewWeather = (ImageView) findViewById(R.id.imageViewWeather);
-        buttonSettings = (Button) findViewById(R.id.buttonSettings);
+        textViewCity = findViewById(R.id.myCity);
+        imageViewWeather = findViewById(R.id.imageViewWeather);
+        buttonSettings = findViewById(R.id.buttonSettings);
         textViewSpeedWindSign = findViewById(R.id.textViewSpeedWindSign);
         textViewPressureSign = findViewById(R.id.textViewPressureSign);
         textViewSpeedWind = findViewById(R.id.textViewSpeedWind);
@@ -169,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Choose city
 
-    private void setOnСityClkBehaviour() {
+    private void setOnCityClkBehaviour() {
         textViewCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,9 +174,9 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout linearLayout = findViewById(R.id.linearLayoutInScroll);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 String[] cities = singletonForSaveState.getCities();
-                for (int i = 0; i < cities.length; i++) {
+                for (String city : cities) {
                     final TextView textView = new TextView(getApplicationContext());
-                    textView.setText(cities[i]);
+                    textView.setText(city);
                     textView.setTextSize(50);
                     linearLayout.addView(textView);
                     textView.setOnClickListener(new View.OnClickListener() {
