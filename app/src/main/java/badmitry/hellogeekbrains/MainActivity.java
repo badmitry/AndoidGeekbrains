@@ -1,22 +1,21 @@
 package badmitry.hellogeekbrains;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private final int REQUEST_CODE_CITY = 1;
+    private final int REQUEST_CODE_SETTING = 2;
     private Random random = new Random();
     private Button buttonShowWeather;
     private TextView textViewWeather;
@@ -24,73 +23,100 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewCity;
     private ImageView imageViewWeather;
     private Button buttonSettings;
+    private Button btnShowWeatherInInternet;
     private TextView textViewSpeedWindSign;
     private TextView textViewPressureSign;
     private TextView textViewSpeedWind;
     private TextView textViewPressure;
-    private SingletonForSaveState singletonForSaveState;
     private int isRain;
-    private boolean isMainLayout;
-
-    private EditText editTextInputCity;
-
-    private Button buttonOk;
-    private CheckBox checkBoxSpeedOfWind;
-    private CheckBox checkBoxPressure;
+    private boolean showSpeedOfWind;
+    private boolean showPressure;
+    private String city;
+    private int valueOfTemperature;
+    private int valueOfSpeedOfWind;
+    private int valueOfPressure;
+    private boolean isDarkTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initViews();
+        setOnBtnShowWeatherClkBehaviour();
+        setOnCityClkBehaviour();
+        setOnBtnSettingsClkBehaviour();
+        setOnBtnShowWeatherInInternet();
         startCreateMainScreen();
     }
 
     @Override
-    public void onBackPressed() {
-        if (isMainLayout) {
-            super.onBackPressed();
+    public void setTheme(int resId) {
+        if (isDarkTheme) {
+            super.setTheme(R.style.darkStyle);
         } else {
-            startCreateMainScreen();
+            super.setTheme(R.style.lightStyle);
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(this, "onStart", Toast.LENGTH_SHORT).show();
-        Log.d("!!!", "onStart: " + System.currentTimeMillis());
+    private void setOnBtnShowWeatherInInternet() {
+        btnShowWeatherInInternet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://yandex.ru/pogoda/" + city;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(this, "onResume", Toast.LENGTH_SHORT).show();
-        Log.d("!!!", "onResume: " + System.currentTimeMillis());
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == this.REQUEST_CODE_CITY && resultCode == RESULT_OK && data != null) {
+            city = data.getStringExtra("city");
+        }
+        if (requestCode == this.REQUEST_CODE_SETTING && resultCode == RESULT_OK && data != null) {
+            showSpeedOfWind = data.getBooleanExtra("showSpeedOfWind", true);
+            showPressure = data.getBooleanExtra("showPressure", true);
+            isDarkTheme = data.getBooleanExtra("isDarkTheme", false);
+        }
+        startCreateMainScreen();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "onPause", Toast.LENGTH_SHORT).show();
-        Log.d("!!!", "onPause: " + System.currentTimeMillis());
+    private void setOnCityClkBehaviour() {
+        textViewCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ChooseCityActivity.class);
+                intent.putExtra("isDarkTheme", isDarkTheme);
+                startActivityForResult(intent, REQUEST_CODE_CITY);
+            }
+        });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(this, "onStop", Toast.LENGTH_SHORT).show();
-        Log.d("!!!", "onStop: " + System.currentTimeMillis());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "onDestroy", Toast.LENGTH_SHORT).show();
-        Log.d("!!!", "onDestroy: " + System.currentTimeMillis());
+    private void setOnBtnSettingsClkBehaviour() {
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ActivityOfSettings.class);
+                intent.putExtra("showSpeedOfWind", showSpeedOfWind);
+                intent.putExtra("showPressure", showPressure);
+                intent.putExtra("isDarkTheme", isDarkTheme);
+                startActivityForResult(intent, REQUEST_CODE_SETTING);
+            }
+        });
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("isRain", isRain);
+        outState.putString("city", city);
+        outState.putBoolean("showSpeedOfWind", showSpeedOfWind);
+        outState.putBoolean("showPressure", showPressure);
+        outState.putInt("valueOfTemperature", valueOfTemperature);
+        outState.putInt("valueOfSpeedOfWind", valueOfSpeedOfWind);
+        outState.putInt("valueOfPressure", valueOfPressure);
         super.onSaveInstanceState(outState);
     }
 
@@ -98,34 +124,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         isRain = savedInstanceState.getInt("isRain");
+        city = savedInstanceState.getString("city");
+        showPressure = savedInstanceState.getBoolean("showPressure");
+        showSpeedOfWind = savedInstanceState.getBoolean("showSpeedOfWind");
+        valueOfTemperature = savedInstanceState.getInt("valueOfTemperature");
+        valueOfSpeedOfWind = savedInstanceState.getInt("valueOfSpeedOfWind");
+        valueOfPressure = savedInstanceState.getInt("valueOfPressure");
     }
 
     private void startCreateMainScreen() {
-        isMainLayout = true;
-        singletonForSaveState = SingletonForSaveState.getInstance();
-        setContentView(R.layout.activity_main);
-        initViews();
-        setOnShowWeatherClkBehaviour();
-        setOnCityClkBehaviour();
-        setOnButtonSettingsClkBehaviour();
-        showWeather();
-        if (singletonForSaveState.getCity() != null) {
-            textViewCity.setText(singletonForSaveState.getCity());
+        if (city != null) {
+            textViewCity.setText(city);
         }
-        if (singletonForSaveState.isSpeedWind()) {
+        if (showSpeedOfWind) {
             textViewSpeedWind.setVisibility(View.VISIBLE);
             textViewSpeedWindSign.setVisibility(View.VISIBLE);
         } else {
             textViewSpeedWind.setVisibility(View.INVISIBLE);
             textViewSpeedWindSign.setVisibility(View.INVISIBLE);
         }
-        if (singletonForSaveState.isPressure()) {
+        if (showPressure) {
             textViewPressure.setVisibility(View.VISIBLE);
             textViewPressureSign.setVisibility(View.VISIBLE);
         } else {
             textViewPressure.setVisibility(View.INVISIBLE);
             textViewPressureSign.setVisibility(View.INVISIBLE);
         }
+        if (city != null) {
+            btnShowWeatherInInternet.setVisibility(View.VISIBLE);
+        } else {
+            btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
+        }
+        showWeather();
     }
 
     private void initViews() {
@@ -139,19 +169,19 @@ public class MainActivity extends AppCompatActivity {
         textViewPressureSign = findViewById(R.id.textViewPressureSign);
         textViewSpeedWind = findViewById(R.id.textViewSpeedWind);
         textViewPressure = findViewById(R.id.textViewPressure);
-        Log.d("initViews", "ok");
+        btnShowWeatherInInternet = findViewById(R.id.btnShowWeatherInInternet);
     }
 
-    private void setOnShowWeatherClkBehaviour() {
+    private void setOnBtnShowWeatherClkBehaviour() {
         buttonShowWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isRain = (random.nextInt(2) + 1);
                 int t = random.nextInt(15);
                 buttonShowWeather.setText(R.string.reload);
-                singletonForSaveState.setValueOfTemperature(t + 15);
-                singletonForSaveState.setValueOfSpeedOfWind(t/2);
-                singletonForSaveState.setValueOfPressure(100 + t / 2);
+                valueOfTemperature = t + 15;
+                valueOfSpeedOfWind = t / 2;
+                valueOfPressure = 100 + t / 2;
                 showWeather();
             }
         });
@@ -159,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void showWeather() {
-        textViewTemperature.setText(singletonForSaveState.getValueOfTemperature() + getString(R.string.grad));
-        textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
-        textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
+        textViewTemperature.setText(valueOfTemperature + getString(R.string.grad));
+        textViewPressure.setText(valueOfPressure + getString(R.string.mm));
+        textViewSpeedWind.setText(valueOfSpeedOfWind + getString(R.string.mInS));
         if (isRain == 1) {
             textViewWeather.setText(R.string.sun);
             imageViewWeather.setImageResource(R.drawable.sun);
@@ -169,98 +199,6 @@ public class MainActivity extends AppCompatActivity {
             textViewWeather.setText(R.string.rainy);
             imageViewWeather.setImageResource(R.drawable.rain);
         }
-    }
-
-    //Choose city
-
-    private void setOnCityClkBehaviour() {
-        textViewCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isMainLayout = false;
-                setContentView(R.layout.city);
-                setEditTextFromChoseCityBehavior();
-                LinearLayout linearLayout = findViewById(R.id.linearLayoutInScroll);
-                linearLayout.setOrientation(LinearLayout.VERTICAL);
-                String[] cities = singletonForSaveState.getCities();
-                for (String city : cities) {
-                    final TextView textView = new TextView(getApplicationContext());
-                    textView.setText(city);
-                    textView.setTextSize(50);
-                    linearLayout.addView(textView);
-                    textView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String text = String.valueOf((textView.getText()));
-                            changeCityOnMainLayout(text);
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void setEditTextFromChoseCityBehavior() {
-        editTextInputCity = findViewById(R.id.inputCity);
-        editTextInputCity.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (i == KeyEvent.KEYCODE_ENTER)) {
-                    String text = String.valueOf((editTextInputCity.getText()));
-                    changeCityOnMainLayout(text);
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void changeCityOnMainLayout(String text) {
-        setContentView(R.layout.activity_main);
-        singletonForSaveState.setCity(text);
-        startCreateMainScreen();
-        showWeather();
-    }
-
-    //Settings
-
-    private void setOnButtonOkClkBehaviour() {
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                singletonForSaveState.setSpeedWind(checkBoxSpeedOfWind.isChecked());
-                singletonForSaveState.setPressure(checkBoxPressure.isChecked());
-                startCreateMainScreen();
-                showWeather();
-            }
-        });
-    }
-
-    private void setOnButtonSettingsClkBehaviour() {
-        buttonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isMainLayout = false;
-                setContentView(R.layout.settings);
-                buttonOk = findViewById(R.id.buttonOk);
-                checkBoxSpeedOfWind = findViewById(R.id.checkBoxSpeedOfWind);
-                checkBoxPressure = findViewById(R.id.checkBoxPressure);
-                if (singletonForSaveState.isPressure()){
-                    checkBoxPressure.setChecked(true);
-                }
-                if (singletonForSaveState.isSpeedWind()){
-                    checkBoxSpeedOfWind.setChecked(true);
-                }
-                setOnButtonOkClkBehaviour();
-                if (singletonForSaveState.isPressure()){
-                    checkBoxPressure.isChecked();
-                }
-                if (singletonForSaveState.isSpeedWind()){
-                    checkBoxSpeedOfWind.isChecked();
-                }
-            }
-        });
     }
 
 }

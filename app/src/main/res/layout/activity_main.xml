@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:text="@string/сity"
-        android:textColor="@color/colorAccent"
         android:textSize="30sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -142,6 +141,18 @@
         app:layout_constraintEnd_toStartOf="@id/textViewPressure"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewWeather" />
+
+    <Button
+        android:id="@+id/btnShowWeatherInInternet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/show_weather_in_internet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSpeedWind" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,7 +6,7 @@ public class SingletonForSaveState implements Serializable {
     private int valueOfTemperature;
     private int valueOfSpeedOfWind;
     private int valueOfPressure;
-    private String[] cities = {"Moscow", "SP", "Vidnoe", "Kazan", "Vladivostok", "Anadir",
+    private String[] cities = {"Moscow", "Saint-petersburg", "Vidnoe", "Kazan", "Vladivostok", "Kaliningrad",
             "Samara", "Murmansk", "Sochi", "Anapa"};
     private String city;
     private boolean speedWind = false;
