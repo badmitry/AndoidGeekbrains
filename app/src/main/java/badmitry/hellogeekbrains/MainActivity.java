@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setOnCityClkBehaviour();
         setOnBtnSettingsClkBehaviour();
         setOnBtnShowWeatherInInternet();
-        startCreateMainScreen();
     }
 
     @Override
@@ -117,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt("valueOfTemperature", valueOfTemperature);
         outState.putInt("valueOfSpeedOfWind", valueOfSpeedOfWind);
         outState.putInt("valueOfPressure", valueOfPressure);
+        outState.putBoolean("isDarkTheme", isDarkTheme);
         super.onSaveInstanceState(outState);
     }
 
@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
         valueOfTemperature = savedInstanceState.getInt("valueOfTemperature");
         valueOfSpeedOfWind = savedInstanceState.getInt("valueOfSpeedOfWind");
         valueOfPressure = savedInstanceState.getInt("valueOfPressure");
+        isDarkTheme = savedInstanceState.getBoolean("isDarkTheme");
+        startCreateMainScreen();
     }
 
     private void startCreateMainScreen() {
