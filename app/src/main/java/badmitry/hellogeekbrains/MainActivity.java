@@ -3,14 +3,18 @@ package badmitry.hellogeekbrains;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,21 +35,24 @@ public class MainActivity extends AppCompatActivity {
     private int isRain;
     private boolean showSpeedOfWind;
     private boolean showPressure;
-    private String city;
     private int valueOfTemperature;
     private int valueOfSpeedOfWind;
     private int valueOfPressure;
     private boolean isDarkTheme;
+    private SingletonForSaveState singletonForSaveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            initViews();
-            setOnBtnShowWeatherClkBehaviour();
-            setOnCityClkBehaviour();
-            setOnBtnSettingsClkBehaviour();
-            setOnBtnShowWeatherInInternet();
+        singletonForSaveState = SingletonForSaveState.getInstance();
+        singletonForSaveState.setMainActivity(this);
+        setContentView(R.layout.activity_main);
+        initViews();
+        setOnBtnShowWeatherClkBehaviour();
+        setOnCityClkBehaviour();
+        setOnBtnSettingsClkBehaviour();
+        setOnBtnShowWeatherInInternet();
+        startCreateMainScreen();
     }
 
     @Override
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         btnShowWeatherInInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://yandex.ru/pogoda/" + city;
+                String url = "https://yandex.ru/pogoda/" + singletonForSaveState.getCity();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
@@ -73,25 +80,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == this.REQUEST_CODE_CITY && resultCode == RESULT_OK && data != null) {
-            city = data.getStringExtra("city");
+            singletonForSaveState.setCity(data.getStringExtra("city"));
         }
         if (requestCode == this.REQUEST_CODE_SETTING && resultCode == RESULT_OK && data != null) {
             showSpeedOfWind = data.getBooleanExtra("showSpeedOfWind", true);
             showPressure = data.getBooleanExtra("showPressure", true);
             isDarkTheme = data.getBooleanExtra("isDarkTheme", false);
+            startCreateMainScreen();
         }
-        startCreateMainScreen();
     }
 
     private void setOnCityClkBehaviour() {
-        textViewCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChooseCityActivity.class);
-                intent.putExtra("isDarkTheme", isDarkTheme);
-                startActivityForResult(intent, REQUEST_CODE_CITY);
-            }
-        });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            textViewCity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MainActivity.this, ChooseCityActivity.class);
+                    intent.putExtra("isDarkTheme", isDarkTheme);
+                    startActivityForResult(intent, REQUEST_CODE_CITY);
+                }
+            });
+        }
     }
 
     private void setOnBtnSettingsClkBehaviour() {
@@ -110,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt("isRain", isRain);
-        outState.putString("city", city);
         outState.putBoolean("showSpeedOfWind", showSpeedOfWind);
         outState.putBoolean("showPressure", showPressure);
         outState.putInt("valueOfTemperature", valueOfTemperature);
@@ -124,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         isRain = savedInstanceState.getInt("isRain");
-        city = savedInstanceState.getString("city");
         showPressure = savedInstanceState.getBoolean("showPressure");
         showSpeedOfWind = savedInstanceState.getBoolean("showSpeedOfWind");
         valueOfTemperature = savedInstanceState.getInt("valueOfTemperature");
@@ -134,9 +141,16 @@ public class MainActivity extends AppCompatActivity {
         startCreateMainScreen();
     }
 
-    private void startCreateMainScreen() {
-        if (city != null) {
+    protected void startCreateMainScreen() {
+        if (singletonForSaveState.isCity()) {
+            String city = singletonForSaveState.getCity();
+            Log.d("main", city);
             textViewCity.setText(city);
+            btnShowWeatherInInternet.setVisibility(View.VISIBLE);
+            generateWeather();
+            showWeather();
+        } else {
+            btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
         }
         if (showSpeedOfWind) {
             textViewSpeedWind.setVisibility(View.VISIBLE);
@@ -152,12 +166,6 @@ public class MainActivity extends AppCompatActivity {
             textViewPressure.setVisibility(View.INVISIBLE);
             textViewPressureSign.setVisibility(View.INVISIBLE);
         }
-        if (city != null) {
-            btnShowWeatherInInternet.setVisibility(View.VISIBLE);
-        } else {
-            btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
-        }
-        showWeather();
     }
 
     private void initViews() {
@@ -178,15 +186,20 @@ public class MainActivity extends AppCompatActivity {
         buttonShowWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isRain = (random.nextInt(2) + 1);
-                int t = random.nextInt(15);
-                buttonShowWeather.setText(R.string.reload);
-                valueOfTemperature = t + 15;
-                valueOfSpeedOfWind = t / 2;
-                valueOfPressure = 100 + t / 2;
+                generateWeather();
                 showWeather();
             }
         });
+    }
+
+    private void generateWeather() {
+        Log.d("gen", "generateWeather: ");
+        isRain = (random.nextInt(2) + 1);
+        int t = random.nextInt(15);
+        buttonShowWeather.setText(R.string.reload);
+        valueOfTemperature = t + 15;
+        valueOfSpeedOfWind = t / 2;
+        valueOfPressure = 100 + t / 2;
     }
 
     @SuppressLint("SetTextI18n")

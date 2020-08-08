@@ -1,49 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linerLayoutSetCity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:ignore="InvalidId">
+    tools:ignore="InvalidId"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <EditText
         android:id="@+id/inputCity"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:autofillHints="no"
         android:hint="@string/input_your_city"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:windowSoftInputMode="stateHidden"
-        android:autofillHints="no" />
+        android:windowSoftInputMode="stateHidden" />
 
-    <ScrollView
-        android:id="@+id/scrollViewCitys"
+    <LinearLayout
+        android:id="@+id/linearLayoutInScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutInScroll"
+        <ListView
+            android:id="@+id/cities_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:ignore="NestedScrolling" />
 
-            <ListView
-                android:id="@+id/cities_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="1000dp"
-                tools:ignore="NestedScrolling" />
+        <TextView
+            android:id="@+id/cities_list_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/empty_list" />
 
-            <TextView
-                android:id="@+id/cities_list_empty_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/empty_list"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
