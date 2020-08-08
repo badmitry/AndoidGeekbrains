@@ -40,20 +40,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initViews();
-        setOnBtnShowWeatherClkBehaviour();
-        setOnCityClkBehaviour();
-        setOnBtnSettingsClkBehaviour();
-        setOnBtnShowWeatherInInternet();
+            setContentView(R.layout.activity_main);
+            initViews();
+            setOnBtnShowWeatherClkBehaviour();
+            setOnCityClkBehaviour();
+            setOnBtnSettingsClkBehaviour();
+            setOnBtnShowWeatherInInternet();
     }
 
     @Override
-    public void setTheme(int resId) {
-        if (isDarkTheme) {
-            super.setTheme(R.style.darkStyle);
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
         } else {
-            super.setTheme(R.style.lightStyle);
+            super.onBackPressed();
         }
     }
 

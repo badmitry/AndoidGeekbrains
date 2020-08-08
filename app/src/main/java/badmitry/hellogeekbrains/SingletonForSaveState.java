@@ -16,7 +16,7 @@ public class SingletonForSaveState implements Serializable {
     private SingletonForSaveState() {
     }
 
-    static protected SingletonForSaveState getInstance() {
+    public static SingletonForSaveState getInstance() {
         if (instance == null) {
             instance = new SingletonForSaveState();
         }

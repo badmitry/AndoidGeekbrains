@@ -1,0 +1,23 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="cities">
+        <item>Moscow</item>
+        <item>Saint-petersburg</item>
+        <item>Vidnoe</item>
+        <item>Kazan</item>
+        <item>Vladivostok</item>
+        <item>Kaliningrad</item>
+        <item>Samara</item>
+        <item>Murmansk</item>
+        <item>Sochi</item>
+        <item>Anapa</item>
+    </string-array>
+
+    <integer-array name="reply_entries">
+
+    </integer-array>
+
+    <integer-array name="reply_values">
+
+    </integer-array>
+</resources>

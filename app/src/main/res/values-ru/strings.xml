@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name" translatable="false">Моя погода</string>
     <string name="show_weather" translatable="false">показать</string>
-    <string name="сity" translatable="false">Мой город</string>
+    <string name="city" translatable="false">Мой город</string>
     <string name="rainy" translatable="false">дождь</string>
     <string name="sun" translatable="false">солнечно</string>
     <string name="reload">обновить</string>
@@ -18,4 +18,5 @@
     <string name="dark_theme">Темная тема</string>
     <string name="white_theme">Светлая тема</string>
     <string name="show_weather_in_internet">Показать погоду в интернете</string>
+    <string name="empty_list">Пустой список</string>
 </resources>

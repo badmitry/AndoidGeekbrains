@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">My Weather</string>
     <string name="show_weather" translatable="false">Show weather</string>
-    <string name="сity" translatable="false">My Сity</string>
+    <string name="city" translatable="false">My Сity</string>
     <string name="rainy" translatable="false">rainy</string>
     <string name="sun" translatable="false">sun</string>
     <string name="reload">reload</string>
@@ -17,4 +17,21 @@
     <string name="dark_theme">Dark theme</string>
     <string name="white_theme">Light theme</string>
     <string name="show_weather_in_internet">Show weather in internet</string>
+    <string name="empty_list">Empty list</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <!-- Preference Titles -->
+    <string name="messages_header" translatable="false">Messages</string>
+    <string name="sync_header" translatable="false">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title" translatable="false">Your signature</string>
+    <string name="reply_title" translatable="false">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title" translatable="false">Sync email periodically</string>
+    <string name="attachment_title" translatable="false">Download incoming attachments</string>
+    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
 </resources>
