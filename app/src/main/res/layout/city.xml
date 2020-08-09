@@ -7,33 +7,18 @@
     android:orientation="vertical"
     tools:ignore="InvalidId">
 
-    <EditText
-        android:id="@+id/inputCity"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:autofillHints="no"
-        android:hint="@string/input_your_city"
-        android:imeOptions="actionDone"
-        android:inputType="text" />
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutInScroll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/cities_list_view"
+        <fragment
+            android:name="badmitry.hellogeekbrains.sampledata.FragmentChooseCities"
+            android:id="@+id/fragmentChooseCities"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="NestedScrolling" />
+            android:layout_height="match_parent"
+            tools:ignore="FragmentTagUsage" />
 
-        <TextView
-            android:id="@+id/cities_list_empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/empty_list" />
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

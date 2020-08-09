@@ -18,7 +18,8 @@
             android:name="badmitry.hellogeekbrains.sampledata.FragmentChooseCities"
             android:id="@+id/fragmentChooseCities"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:ignore="FragmentTagUsage" />
     </FrameLayout>
 
     <FrameLayout
@@ -32,7 +33,8 @@
             android:name="badmitry.hellogeekbrains.sampledata.FragmentWeather"
             android:id="@+id/fragmentShowWeather"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:ignore="FragmentTagUsage" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
