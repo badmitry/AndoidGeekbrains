@@ -13,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 
@@ -77,5 +80,7 @@ public class FragmentChooseCities extends Fragment {
 
     private void changeCityOnMainLayout(String text) {
         singletonForSaveState.setCity(text);
+        singletonForSaveState.getFragmentWeather().startCreateMainScreen();
+
     }
 }
