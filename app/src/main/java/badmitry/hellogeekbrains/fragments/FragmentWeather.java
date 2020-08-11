@@ -1,25 +1,32 @@
-package badmitry.hellogeekbrains.sampledata;
+package badmitry.hellogeekbrains.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.Random;
+
 import badmitry.hellogeekbrains.ActivityOfSettings;
 import badmitry.hellogeekbrains.ChooseCityActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
+import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,10 +36,7 @@ public class FragmentWeather extends Fragment {
     private final int REQUEST_CODE_SETTING = 2;
     private Random random = new Random();
     private Button buttonShowWeather;
-    private TextView textViewWeather;
-    private TextView textViewTemperature;
     private TextView textViewCity;
-    private ImageView imageViewWeather;
     private Button buttonSettings;
     private Button btnShowWeatherInInternet;
     private TextView textViewSpeedWindSign;
@@ -40,6 +44,8 @@ public class FragmentWeather extends Fragment {
     private TextView textViewSpeedWind;
     private TextView textViewPressure;
     private SingletonForSaveState singletonForSaveState;
+    private RecyclerView recyclerView;
+    private ArrayList<int[]> arrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -47,6 +53,7 @@ public class FragmentWeather extends Fragment {
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,6 +67,7 @@ public class FragmentWeather extends Fragment {
         startCreateMainScreen();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -112,6 +120,7 @@ public class FragmentWeather extends Fragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void startCreateMainScreen() {
         if (singletonForSaveState.isCity()) {
             String city = singletonForSaveState.getCity();
@@ -140,49 +149,56 @@ public class FragmentWeather extends Fragment {
 
     private void initViews(View view) {
         buttonShowWeather = view.findViewById(R.id.buttonShowWeather);
-        textViewTemperature = view.findViewById(R.id.textViewTemperature);
-        textViewWeather = view.findViewById(R.id.textViewWeather);
         textViewCity = view.findViewById(R.id.myCity);
-        imageViewWeather = view.findViewById(R.id.imageViewWeather);
         buttonSettings = view.findViewById(R.id.buttonSettings);
         textViewSpeedWindSign = view.findViewById(R.id.textViewSpeedWindSign);
         textViewPressureSign = view.findViewById(R.id.textViewPressureSign);
         textViewSpeedWind = view.findViewById(R.id.textViewSpeedWind);
         textViewPressure = view.findViewById(R.id.textViewPressure);
         btnShowWeatherInInternet = view.findViewById(R.id.btnShowWeatherInInternet);
+        recyclerView = view.findViewById(R.id.recyclerViewForWeather);
     }
 
     private void setOnBtnShowWeatherClkBehaviour() {
         buttonShowWeather.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                generateWeather();
-                showWeather();
+                if (singletonForSaveState.isCity()) {
+                    generateWeather();
+                    showWeather();
+                }
             }
         });
     }
 
     private void generateWeather() {
-        Log.d("gen", "generateWeather: ");
+        arrayList.clear();
         singletonForSaveState.setIsRain(random.nextInt(2) + 1);
         int t = random.nextInt(15);
         buttonShowWeather.setText(R.string.reload);
         singletonForSaveState.setValueOfTemperature(t + 15);
         singletonForSaveState.setValueOfSpeedOfWind(t / 2);
         singletonForSaveState.setValueOfPressure(100 + t / 2);
+        arrayList.add(new int[]{singletonForSaveState.getValueOfTemperature(), singletonForSaveState.getIsRain()});
+        for (int i = 0; i < 2; i++) {
+            arrayList.add(new int[]{(random.nextInt(15) + 15), (random.nextInt(2) + 1)});
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     private void showWeather() {
-        textViewTemperature.setText(singletonForSaveState.getValueOfTemperature() + getString(R.string.grad));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
+        AdapterForWeather adapter;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            adapter = new AdapterForWeather(arrayList, 3);
+        } else {
+            adapter = new AdapterForWeather(arrayList, 1);
+        }
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
         textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
         textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
-        if (singletonForSaveState.getIsRain() == 1) {
-            textViewWeather.setText(R.string.sun);
-            imageViewWeather.setImageResource(R.drawable.sun);
-        } else if (singletonForSaveState.getIsRain() == 2) {
-            textViewWeather.setText(R.string.rainy);
-            imageViewWeather.setImageResource(R.drawable.rain);
-        }
     }
 }

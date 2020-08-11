@@ -1,27 +1,33 @@
-package badmitry.hellogeekbrains.sampledata;
+package badmitry.hellogeekbrains.fragments;
 
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
+import badmitry.hellogeekbrains.adapterRLV.AdapterRLV;
+import badmitry.hellogeekbrains.adapterRLV.OnItemClicker;
 
-public class FragmentChooseCities extends Fragment {
+public class FragmentChooseCities extends Fragment implements OnItemClicker {
 
     private EditText editTextInputCity;
-    private ListView listViewOfCities;
-    private TextView emptyTextView;
     private SingletonForSaveState singletonForSaveState;
+    private RecyclerView recyclerView;
+    private ArrayList<String> listData = new ArrayList<>();
 
     @Nullable
     @Override
@@ -37,31 +43,30 @@ public class FragmentChooseCities extends Fragment {
         setEditTextFromChoseCityBehavior();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onItemClicked(String text) {
+        changeCityOnMainLayout(text);
+    }
+
     private void initViews(@NonNull View view) {
         editTextInputCity = view.findViewById(R.id.inputCity);
-        listViewOfCities = view.findViewById(R.id.cities_list_view);
-        emptyTextView = view.findViewById(R.id.cities_list_empty_view);
         singletonForSaveState = SingletonForSaveState.getInstance();
+        editTextInputCity = view.findViewById(R.id.inputCity);
+        recyclerView = view.findViewById(R.id.recycler_view);
     }
 
     private void initList() {
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(requireActivity(), R.array.cities,
-                        android.R.layout.simple_list_item_activated_1);
-        listViewOfCities.setAdapter(adapter);
-
-        listViewOfCities.setEmptyView(emptyTextView);
-
-        listViewOfCities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String text = parent.getItemAtPosition(position).toString();
-                changeCityOnMainLayout(text);
-            }
-        });
+        listData.addAll(Arrays.asList(getResources().getStringArray(R.array.cities)));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
+        AdapterRLV adapter = new AdapterRLV(listData, this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
     private void setEditTextFromChoseCityBehavior() {
         editTextInputCity.setOnKeyListener(new View.OnKeyListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
@@ -75,9 +80,16 @@ public class FragmentChooseCities extends Fragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void changeCityOnMainLayout(String text) {
         singletonForSaveState.setCity(text);
         singletonForSaveState.getFragmentWeather().startCreateMainScreen();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            requireActivity().finish();
+        }
+    }
 
+    public String getCityFromEditText() {
+        return editTextInputCity.getText().toString();
     }
 }

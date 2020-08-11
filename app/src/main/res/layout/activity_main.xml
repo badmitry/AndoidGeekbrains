@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <fragment
-            android:name="badmitry.hellogeekbrains.sampledata.FragmentWeather"
+            android:name="badmitry.hellogeekbrains.fragments.FragmentWeather"
             android:id="@+id/fragmentShowWeather"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

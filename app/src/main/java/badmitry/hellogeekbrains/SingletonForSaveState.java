@@ -1,8 +1,7 @@
 package badmitry.hellogeekbrains;
 
 import java.io.Serializable;
-
-import badmitry.hellogeekbrains.sampledata.FragmentWeather;
+import badmitry.hellogeekbrains.fragments.FragmentWeather;
 
 public class SingletonForSaveState implements Serializable {
 

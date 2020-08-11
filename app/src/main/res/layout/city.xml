@@ -13,7 +13,7 @@
         tools:ignore="UselessParent">
 
         <fragment
-            android:name="badmitry.hellogeekbrains.sampledata.FragmentChooseCities"
+            android:name="badmitry.hellogeekbrains.fragments.FragmentChooseCities"
             android:id="@+id/fragmentChooseCities"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -91,7 +91,7 @@ public class ActivityOfSettings extends AppCompatActivity {
     public void setTheme(int resid) {
         if (isDarkTheme) {
             super.setTheme(R.style.darkStyle);
-        }else{
+        } else {
             super.setTheme(R.style.lightStyle);
         }
     }

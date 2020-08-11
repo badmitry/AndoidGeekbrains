@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toStartOf="@id/frameLayoutOfWeather"
         app:layout_constraintHorizontal_weight="0.4">
         <fragment
-            android:name="badmitry.hellogeekbrains.sampledata.FragmentChooseCities"
+            android:name="badmitry.hellogeekbrains.fragments.FragmentChooseCities"
             android:id="@+id/fragmentChooseCities"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toEndOf="@id/frameLayoutOfCities"
         app:layout_constraintHorizontal_weight="0.6">
         <fragment
-            android:name="badmitry.hellogeekbrains.sampledata.FragmentWeather"
+            android:name="badmitry.hellogeekbrains.fragments.FragmentWeather"
             android:id="@+id/fragmentShowWeather"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
