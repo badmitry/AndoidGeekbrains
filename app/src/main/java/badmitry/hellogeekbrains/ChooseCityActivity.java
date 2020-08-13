@@ -53,7 +53,6 @@ public class ChooseCityActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             FragmentChooseCities fr = (FragmentChooseCities) getSupportFragmentManager().findFragmentById(R.id.fragmentChooseCities);
-            System.out.println(fr);
             if (fr != null) {
                 String text = fr.getCityFromEditText();
                 if (text != null && !text.equals("")) {

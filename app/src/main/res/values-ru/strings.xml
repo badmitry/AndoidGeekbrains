@@ -19,4 +19,5 @@
     <string name="white_theme">Светлая тема</string>
     <string name="show_weather_in_internet">Показать погоду в интернете</string>
     <string name="empty_list">Пустой список</string>
+    <string name="settingsMenu">Настройки</string>
 </resources>

@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Random;
 
-import badmitry.hellogeekbrains.ActivityOfSettings;
 import badmitry.hellogeekbrains.ChooseCityActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -33,11 +32,9 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentWeather extends Fragment {
 
     private final int REQUEST_CODE_CITY = 1;
-    private final int REQUEST_CODE_SETTING = 2;
     private Random random = new Random();
     private Button buttonShowWeather;
     private TextView textViewCity;
-    private Button buttonSettings;
     private Button btnShowWeatherInInternet;
     private TextView textViewSpeedWindSign;
     private TextView textViewPressureSign;
@@ -62,7 +59,6 @@ public class FragmentWeather extends Fragment {
         initViews(view);
         setOnBtnShowWeatherClkBehaviour();
         setOnCityClkBehaviour();
-        setOnBtnSettingsClkBehaviour();
         setOnBtnShowWeatherInInternet();
         startCreateMainScreen();
     }
@@ -73,11 +69,6 @@ public class FragmentWeather extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == this.REQUEST_CODE_CITY && resultCode == RESULT_OK && data != null) {
             singletonForSaveState.setCity(data.getStringExtra("city"));
-        }
-        if (requestCode == this.REQUEST_CODE_SETTING && resultCode == RESULT_OK && data != null) {
-            singletonForSaveState.setShowSpeedOfWind(data.getBooleanExtra("showSpeedOfWind", true));
-            singletonForSaveState.setShowPressure(data.getBooleanExtra("showPressure", true));
-            singletonForSaveState.setDarkTheme(data.getBooleanExtra("isDarkTheme", false));
         }
         startCreateMainScreen();
     }
@@ -107,21 +98,8 @@ public class FragmentWeather extends Fragment {
         }
     }
 
-    private void setOnBtnSettingsClkBehaviour() {
-        buttonSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ActivityOfSettings.class);
-                intent.putExtra("showSpeedOfWind", singletonForSaveState.isShowSpeedOfWind());
-                intent.putExtra("showPressure", singletonForSaveState.isShowPressure());
-                intent.putExtra("isDarkTheme", singletonForSaveState.isDarkTheme());
-                startActivityForResult(intent, REQUEST_CODE_SETTING);
-            }
-        });
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected void startCreateMainScreen() {
+    public void startCreateMainScreen() {
         if (singletonForSaveState.isCity()) {
             String city = singletonForSaveState.getCity();
             textViewCity.setText(city);
@@ -150,7 +128,6 @@ public class FragmentWeather extends Fragment {
     private void initViews(View view) {
         buttonShowWeather = view.findViewById(R.id.buttonShowWeather);
         textViewCity = view.findViewById(R.id.myCity);
-        buttonSettings = view.findViewById(R.id.buttonSettings);
         textViewSpeedWindSign = view.findViewById(R.id.textViewSpeedWindSign);
         textViewPressureSign = view.findViewById(R.id.textViewPressureSign);
         textViewSpeedWind = view.findViewById(R.id.textViewSpeedWind);
