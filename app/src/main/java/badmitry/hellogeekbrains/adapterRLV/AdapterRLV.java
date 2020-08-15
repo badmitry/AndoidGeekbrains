@@ -34,7 +34,6 @@ public class AdapterRLV extends RecyclerView.Adapter<AdapterRLV.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String text = data.get(position);
-
         holder.setTextToTextView(text);
         holder.setOnClickOnItem(text);
     }

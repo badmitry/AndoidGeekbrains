@@ -21,9 +21,16 @@ public class ActivityOfSettings extends AppCompatActivity {
     private boolean isDarkTheme;
     private RadioButton radioBtnDarkTheme;
     private RadioButton radioBtnLightTheme;
+    private SingletonForSaveState singletonForSaveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        singletonForSaveState = SingletonForSaveState.getInstance();
+        if (singletonForSaveState.isDarkTheme()) {
+            setTheme(R.style.darkStyle);
+        } else {
+            setTheme(R.style.lightStyle);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
         initViews();
@@ -86,14 +93,4 @@ public class ActivityOfSettings extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         finish();
     }
-
-    @Override
-    public void setTheme(int resid) {
-        if (isDarkTheme) {
-            super.setTheme(R.style.darkStyle);
-        } else {
-            super.setTheme(R.style.lightStyle);
-        }
-    }
-
 }

@@ -20,4 +20,5 @@
     <string name="show_weather_in_internet">Показать погоду в интернете</string>
     <string name="empty_list">Пустой список</string>
     <string name="settingsMenu">Настройки</string>
+    <string name="developers">Разработчики</string>
 </resources>

@@ -5,4 +5,8 @@
         android:title="@string/settingsMenu"
         android:icon="@android:drawable/ic_input_add"/>
 
+    <item android:id="@+id/developers"
+        android:title="@string/developers"
+        android:icon="@android:drawable/ic_input_add"/>
+
 </menu>

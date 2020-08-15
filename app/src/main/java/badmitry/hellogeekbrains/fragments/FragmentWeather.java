@@ -63,16 +63,6 @@ public class FragmentWeather extends Fragment {
         startCreateMainScreen();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == this.REQUEST_CODE_CITY && resultCode == RESULT_OK && data != null) {
-            singletonForSaveState.setCity(data.getStringExtra("city"));
-        }
-        startCreateMainScreen();
-    }
-
     private void setOnBtnShowWeatherInInternet() {
         btnShowWeatherInInternet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +148,7 @@ public class FragmentWeather extends Fragment {
         singletonForSaveState.setValueOfSpeedOfWind(t / 2);
         singletonForSaveState.setValueOfPressure(100 + t / 2);
         arrayList.add(new int[]{singletonForSaveState.getValueOfTemperature(), singletonForSaveState.getIsRain()});
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             arrayList.add(new int[]{(random.nextInt(15) + 15), (random.nextInt(2) + 1)});
         }
     }
@@ -169,7 +159,7 @@ public class FragmentWeather extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
         AdapterForWeather adapter;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adapter = new AdapterForWeather(arrayList, 3);
+            adapter = new AdapterForWeather(arrayList, 5);
         } else {
             adapter = new AdapterForWeather(arrayList, 1);
         }

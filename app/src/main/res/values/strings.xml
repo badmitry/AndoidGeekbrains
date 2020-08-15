@@ -36,4 +36,5 @@
     <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="settingsMenu">settings</string>
+    <string name="developers">developers</string>
 </resources>
