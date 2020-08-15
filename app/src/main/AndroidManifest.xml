@@ -12,6 +12,7 @@
         android:fullBackupContent="false">
         <activity android:name=".ActivityOfSettings" />
         <activity android:name=".ChooseCityActivity" />
+        <activity android:name=".ActivityDevelopers"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

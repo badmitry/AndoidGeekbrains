@@ -20,9 +20,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        singletonForSaveState = SingletonForSaveState.getInstance();
+        if (singletonForSaveState.isDarkTheme()) {
+            setTheme(R.style.darkStyle);
+        } else {
+            setTheme(R.style.lightStyle);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        singletonForSaveState = SingletonForSaveState.getInstance();
     }
 
     @Override
@@ -50,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_SETTING);
             return true;
         }
+        if (item.getItemId() == R.id.developers) {
+            Intent intent = new Intent(this, ActivityDevelopers.class);
+            startActivity(intent);
+            return true;
+        }
         return false;
     }
 
@@ -65,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             if (fw != null) {
                 fw.startCreateMainScreen();
             }
+            this.recreate();
         }
     }
-
 }

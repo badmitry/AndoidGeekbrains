@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -81,11 +85,22 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void changeCityOnMainLayout(String text) {
-        singletonForSaveState.setCity(text);
-        singletonForSaveState.getFragmentWeather().startCreateMainScreen();
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            requireActivity().finish();
+    public void changeCityOnMainLayout(String text) {
+        boolean checkCity = false;
+        for (int j = 0; j < listData.size(); j++) {
+            if (listData.get(j).toLowerCase().equals(text.toLowerCase())) {
+                singletonForSaveState.setCity(listData.get(j));
+                singletonForSaveState.getFragmentWeather().startCreateMainScreen();
+                checkCity = true;
+                editTextInputCity.setText("");
+            }
+        }
+        if (!checkCity) {
+            Snackbar.make(editTextInputCity,"City " + text + " don`t found", Snackbar.LENGTH_LONG).show();
+        } else {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                requireActivity().finish();
+            }
         }
     }
 

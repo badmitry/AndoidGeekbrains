@@ -7,25 +7,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import badmitry.hellogeekbrains.R;
+import badmitry.hellogeekbrains.SingletonForSaveState;
 
 public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.ViewHolder> {
 
     private ArrayList<int[]> data;
     private int arraySize;
     Calendar calendar;
+    SingletonForSaveState singletonForSaveState;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public AdapterForWeather(ArrayList<int[]> data, int arraySize) {
         this.data = data;
         this.arraySize = arraySize;
         calendar = Calendar.getInstance();
+        singletonForSaveState = SingletonForSaveState.getInstance();
     }
 
     @NonNull
@@ -71,10 +77,18 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
             textViewTemperature.setText(arr[0] + " " + CELSIUS);
             if (arr[1] == 1) {
                 textViewWeather.setText(R.string.sun);
-                imageViewWeather.setImageResource(R.drawable.sun);
+                if (singletonForSaveState.isDarkTheme()) {
+                    imageViewWeather.setImageResource(R.drawable.sun_dark);
+                } else {
+                    imageViewWeather.setImageResource(R.drawable.sun);
+                }
             } else if (arr[1] == 2) {
                 textViewWeather.setText(R.string.rainy);
-                imageViewWeather.setImageResource(R.drawable.rain);
+                if (singletonForSaveState.isDarkTheme()) {
+                    imageViewWeather.setImageResource(R.drawable.rain_dark);
+                } else {
+                    imageViewWeather.setImageResource(R.drawable.rain);
+                }
             }
             calendar.add(Calendar.DAY_OF_YEAR, 1);
         }

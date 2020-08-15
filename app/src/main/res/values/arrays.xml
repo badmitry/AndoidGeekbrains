@@ -13,6 +13,12 @@
         <item>Anapa</item>
     </string-array>
 
+    <string-array name="developers">
+        <item>BaDmitry</item>
+        <item>Vladimir</item>
+        <item>Geekbrains</item>
+    </string-array>
+
     <integer-array name="reply_entries">
 
     </integer-array>

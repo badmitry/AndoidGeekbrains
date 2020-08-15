@@ -5,6 +5,7 @@ import badmitry.hellogeekbrains.fragments.FragmentWeather;
 
 public class SingletonForSaveState implements Serializable {
 
+    private static SingletonForSaveState instance;
     private String city;
     private int isRain;
     private boolean showSpeedOfWind;
@@ -78,8 +79,6 @@ public class SingletonForSaveState implements Serializable {
     public void setDarkTheme(boolean darkTheme) {
         isDarkTheme = darkTheme;
     }
-
-    private static SingletonForSaveState instance;
 
     public void setCity(String city) {
         if (city != null && !city.equals("")) {
