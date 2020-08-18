@@ -3,14 +3,11 @@ package badmitry.hellogeekbrains.fragments;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -96,6 +92,7 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
                 singletonForSaveState.setCity(listData.get(j));
                 singletonForSaveState.getFragmentWeather().startCreateMainScreen();
                 checkCity = true;
+                editTextInputCity.setText("");
             }
         }
         if (!checkCity) {

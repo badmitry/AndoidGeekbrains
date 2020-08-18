@@ -21,11 +21,10 @@ public class ActivityOfSettings extends AppCompatActivity {
     private boolean isDarkTheme;
     private RadioButton radioBtnDarkTheme;
     private RadioButton radioBtnLightTheme;
-    private SingletonForSaveState singletonForSaveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        singletonForSaveState = SingletonForSaveState.getInstance();
+        SingletonForSaveState singletonForSaveState = SingletonForSaveState.getInstance();
         if (singletonForSaveState.isDarkTheme()) {
             setTheme(R.style.darkStyle);
         } else {

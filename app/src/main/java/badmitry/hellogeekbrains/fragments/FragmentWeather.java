@@ -27,8 +27,6 @@ import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 
-import static android.app.Activity.RESULT_OK;
-
 public class FragmentWeather extends Fragment {
 
     private final int REQUEST_CODE_CITY = 1;
@@ -94,10 +92,12 @@ public class FragmentWeather extends Fragment {
             String city = singletonForSaveState.getCity();
             textViewCity.setText(city);
             btnShowWeatherInInternet.setVisibility(View.VISIBLE);
+            buttonShowWeather.setVisibility(View.VISIBLE);
             generateWeather();
             showWeather();
         } else {
             btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
+            buttonShowWeather.setVisibility(View.INVISIBLE);
         }
         if (singletonForSaveState.isShowSpeedOfWind()) {
             textViewSpeedWind.setVisibility(View.VISIBLE);

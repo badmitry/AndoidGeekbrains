@@ -14,16 +14,9 @@
     </string-array>
 
     <string-array name="developers">
-        <item>Moscow</item>
-        <item>Saint-petersburg</item>
-        <item>Vidnoe</item>
-        <item>Kazan</item>
-        <item>Vladivostok</item>
-        <item>Kaliningrad</item>
-        <item>Samara</item>
-        <item>Murmansk</item>
-        <item>Sochi</item>
-        <item>Anapa</item>
+        <item>BaDmitry</item>
+        <item>Vladimir</item>
+        <item>Geekbrains</item>
     </string-array>
 
     <integer-array name="reply_entries">

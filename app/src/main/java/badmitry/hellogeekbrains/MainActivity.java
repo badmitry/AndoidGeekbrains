@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE_SETTING);
             return true;
         }
+        if (item.getItemId() == R.id.developers) {
+            Intent intent = new Intent(this, ActivityDevelopers.class);
+            startActivity(intent);
+            return true;
+        }
         return false;
     }
 

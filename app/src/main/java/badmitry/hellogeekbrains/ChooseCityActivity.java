@@ -3,7 +3,6 @@ package badmitry.hellogeekbrains;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,11 +11,10 @@ import java.util.Objects;
 import badmitry.hellogeekbrains.fragments.FragmentChooseCities;
 
 public class ChooseCityActivity extends AppCompatActivity {
-    private SingletonForSaveState singletonForSaveState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        singletonForSaveState = SingletonForSaveState.getInstance();
+        SingletonForSaveState singletonForSaveState = SingletonForSaveState.getInstance();
         if (singletonForSaveState.isDarkTheme()) {
             setTheme(R.style.darkStyle);
         } else {
