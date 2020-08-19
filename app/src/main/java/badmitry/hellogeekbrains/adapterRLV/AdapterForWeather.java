@@ -21,13 +21,13 @@ import badmitry.hellogeekbrains.SingletonForSaveState;
 
 public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.ViewHolder> {
 
-    private ArrayList<int[]> data;
+    private ArrayList<String[]> data;
     private int arraySize;
     Calendar calendar;
     SingletonForSaveState singletonForSaveState;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public AdapterForWeather(ArrayList<int[]> data, int arraySize) {
+    public AdapterForWeather(ArrayList<String[]> data, int arraySize) {
         this.data = data;
         this.arraySize = arraySize;
         calendar = Calendar.getInstance();
@@ -44,7 +44,7 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int[] arr = data.get(position);
+        String[] arr = data.get(position);
         holder.setTextAndPicture(arr);
     }
 
@@ -71,24 +71,56 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
         }
 
         @SuppressLint("SetTextI18n")
-        void setTextAndPicture(int[] arr) {
+        void setTextAndPicture(String[] arr) {
             String CELSIUS = "\u2103";
             date.setText(simpleDateFormat.format(calendar.getTime()));
             textViewTemperature.setText(arr[0] + " " + CELSIUS);
-            if (arr[1] == 1) {
-                textViewWeather.setText(R.string.sun);
-                if (singletonForSaveState.isDarkTheme()) {
-                    imageViewWeather.setImageResource(R.drawable.sun_dark);
-                } else {
-                    imageViewWeather.setImageResource(R.drawable.sun);
-                }
-            } else if (arr[1] == 2) {
-                textViewWeather.setText(R.string.rainy);
-                if (singletonForSaveState.isDarkTheme()) {
-                    imageViewWeather.setImageResource(R.drawable.rain_dark);
-                } else {
-                    imageViewWeather.setImageResource(R.drawable.rain);
-                }
+            switch (arr[1]) {
+                case "01d":
+                case "01n":
+                    textViewWeather.setText(R.string.sun);
+                    imageViewWeather.setImageResource(R.drawable.p01d2x);
+                    break;
+                case "02d":
+                case "02n":
+                    textViewWeather.setText(R.string.cloud);
+                    imageViewWeather.setImageResource(R.drawable.p02d2x);
+                    break;
+                case "03d":
+                case "03n":
+                    textViewWeather.setText(R.string.cloud);
+                    imageViewWeather.setImageResource(R.drawable.p03d2x);
+                    break;
+                case "04d":
+                case "04n":
+                    textViewWeather.setText(R.string.cloud);
+                    imageViewWeather.setImageResource(R.drawable.p04d2x);
+                    break;
+                case "09d":
+                case "09n":
+                    textViewWeather.setText(R.string.rainy);
+                    imageViewWeather.setImageResource(R.drawable.p09d2x);
+                    break;
+                case "10d":
+                case "10n":
+                    textViewWeather.setText(R.string.rainy);
+                    imageViewWeather.setImageResource(R.drawable.p10d2x);
+                    break;
+                case "11d":
+                case "11n":
+                    textViewWeather.setText(R.string.rainy);
+                    imageViewWeather.setImageResource(R.drawable.p11d2x);
+                    break;
+                case "13d":
+                case "13n":
+                    textViewWeather.setText(R.string.snow);
+                    imageViewWeather.setImageResource(R.drawable.p13d2x);
+                    break;
+                case "50d":
+                case "50n":
+                    textViewWeather.setText(R.string.mist);
+                    imageViewWeather.setImageResource(R.drawable.p03d2x);
+                    break;
             }
             calendar.add(Calendar.DAY_OF_YEAR, 1);
         }

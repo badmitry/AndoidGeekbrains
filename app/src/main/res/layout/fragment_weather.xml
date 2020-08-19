@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         style="@style/marginStart_marginEnd"
         android:layout_marginTop="@dimen/marginCity"
-        android:text="@string/show_weather"
+        android:text="@string/reload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.7"
         app:layout_constraintStart_toStartOf="parent"

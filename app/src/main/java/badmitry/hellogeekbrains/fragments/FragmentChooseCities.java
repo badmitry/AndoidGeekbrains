@@ -88,8 +88,9 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     public void changeCityOnMainLayout(String text) {
         boolean checkCity = false;
         for (int j = 0; j < listData.size(); j++) {
-            if (listData.get(j).toLowerCase().equals(text.toLowerCase())) {
-                singletonForSaveState.setCity(listData.get(j));
+            String cityFromList = listData.get(j);
+            if (cityFromList.toLowerCase().equals(text.toLowerCase())) {
+                singletonForSaveState.setCity(cityFromList);
                 singletonForSaveState.getFragmentWeather().startCreateMainScreen();
                 checkCity = true;
                 editTextInputCity.setText("");

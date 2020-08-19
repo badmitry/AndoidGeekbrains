@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Моя погода</string>
-    <string name="show_weather" translatable="false">показать</string>
     <string name="city" translatable="false">Мой город</string>
-    <string name="rainy" translatable="false">дождь</string>
-    <string name="sun" translatable="false">солнечно</string>
+    <string name="rainy" translatable="false">Дождь</string>
+    <string name="sun" translatable="false">Солнечно</string>
+    <string name="cloud" translatable="false">Облачно</string>
+    <string name="snow" translatable="false">Снег</string>
+    <string name="mist" translatable="false">Туман</string>
     <string name="reload">обновить</string>
     <string name="input_your_city">введите Ваш город</string>
     <string name="speed_of_wind">Скорость:</string>
@@ -21,4 +23,5 @@
     <string name="empty_list">Пустой список</string>
     <string name="settingsMenu">Настройки</string>
     <string name="developers">Разработчики</string>
+    <string name="connection_is_not">Соединение не установлено</string>
 </resources>

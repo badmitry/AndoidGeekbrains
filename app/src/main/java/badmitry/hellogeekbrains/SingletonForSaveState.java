@@ -1,22 +1,40 @@
 package badmitry.hellogeekbrains;
 
-import android.content.SharedPreferences;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
 
 public class SingletonForSaveState implements Serializable {
 
     private static SingletonForSaveState instance;
     private String city;
-    private int isRain;
     private boolean showSpeedOfWind;
     private boolean showPressure;
-    private int valueOfTemperature;
-    private int valueOfSpeedOfWind;
-    private int valueOfPressure;
+    private double valueOfSpeedOfWind;
+    private double valueOfPressure;
     private boolean isDarkTheme;
     private FragmentWeather fragmentWeather;
+    private WeatherFromInternet weatherFromInternet;
+    private ArrayList<String[]> arrayList = new ArrayList<>();
+    public ArrayList<String[]> getArrayList() {
+        return arrayList;
+    }
+
+    private SingletonForSaveState() {
+        weatherFromInternet = new WeatherFromInternet(this);
+    }
+
+    public static SingletonForSaveState getInstance() {
+        if (instance == null) {
+            instance = new SingletonForSaveState();
+        }
+        return instance;
+    }
+
+    public WeatherFromInternet getWeatherFromInternet() {
+        return weatherFromInternet;
+    }
 
     public void setFragmentWeather(FragmentWeather fragmentWeather) {
         this.fragmentWeather = fragmentWeather;
@@ -24,10 +42,6 @@ public class SingletonForSaveState implements Serializable {
 
     public FragmentWeather getFragmentWeather() {
         return fragmentWeather;
-    }
-
-    public int getIsRain() {
-        return isRain;
     }
 
     public boolean isShowSpeedOfWind() {
@@ -38,24 +52,16 @@ public class SingletonForSaveState implements Serializable {
         return showPressure;
     }
 
-    public int getValueOfTemperature() {
-        return valueOfTemperature;
-    }
-
-    public int getValueOfSpeedOfWind() {
+    public double getValueOfSpeedOfWind() {
         return valueOfSpeedOfWind;
     }
 
-    public int getValueOfPressure() {
+    public double getValueOfPressure() {
         return valueOfPressure;
     }
 
     public boolean isDarkTheme() {
         return isDarkTheme;
-    }
-
-    public void setIsRain(int isRain) {
-        this.isRain = isRain;
     }
 
     public void setShowSpeedOfWind(boolean showSpeedOfWind) {
@@ -66,15 +72,11 @@ public class SingletonForSaveState implements Serializable {
         this.showPressure = showPressure;
     }
 
-    public void setValueOfTemperature(int valueOfTemperature) {
-        this.valueOfTemperature = valueOfTemperature;
-    }
-
-    public void setValueOfSpeedOfWind(int valueOfSpeedOfWind) {
+    public void setValueOfSpeedOfWind(double valueOfSpeedOfWind) {
         this.valueOfSpeedOfWind = valueOfSpeedOfWind;
     }
 
-    public void setValueOfPressure(int valueOfPressure) {
+    public void setValueOfPressure(double valueOfPressure) {
         this.valueOfPressure = valueOfPressure;
     }
 
@@ -90,16 +92,6 @@ public class SingletonForSaveState implements Serializable {
 
     public String getCity() {
         return city;
-    }
-
-    private SingletonForSaveState() {
-    }
-
-    public static SingletonForSaveState getInstance() {
-        if (instance == null) {
-            instance = new SingletonForSaveState();
-        }
-        return instance;
     }
 
     public boolean isCity() {

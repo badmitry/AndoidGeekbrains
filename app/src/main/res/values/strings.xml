@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name" translatable="false">My Weather</string>
-    <string name="show_weather" translatable="false">Show weather</string>
     <string name="city" translatable="false">My Сity</string>
-    <string name="rainy" translatable="false">rainy</string>
-    <string name="sun" translatable="false">sun</string>
+    <string name="sun" translatable="false">Sun</string>
+    <string name="rainy" translatable="false">Rainy</string>
+    <string name="cloud" translatable="false">Cloud</string>
+    <string name="snow" translatable="false">Snow</string>
+    <string name="mist" translatable="false">Mist</string>
     <string name="reload">reload</string>
     <string name="input_your_city">input your city</string>
     <string name="speed_of_wind">Speed:</string>
@@ -18,6 +20,7 @@
     <string name="white_theme">Light theme</string>
     <string name="show_weather_in_internet">Show weather in internet</string>
     <string name="empty_list">Empty list</string>
+    <string name="connection_is_not">Сonnection not established</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <!-- Preference Titles -->

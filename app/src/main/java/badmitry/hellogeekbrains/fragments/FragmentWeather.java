@@ -19,9 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import badmitry.hellogeekbrains.ChooseCityActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -30,7 +27,6 @@ import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 public class FragmentWeather extends Fragment {
 
     private final int REQUEST_CODE_CITY = 1;
-    private Random random = new Random();
     private Button buttonShowWeather;
     private TextView textViewCity;
     private Button btnShowWeatherInInternet;
@@ -40,7 +36,6 @@ public class FragmentWeather extends Fragment {
     private TextView textViewPressure;
     private SingletonForSaveState singletonForSaveState;
     private RecyclerView recyclerView;
-    private ArrayList<int[]> arrayList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -89,12 +84,10 @@ public class FragmentWeather extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCreateMainScreen() {
         if (singletonForSaveState.isCity()) {
-            String city = singletonForSaveState.getCity();
-            textViewCity.setText(city);
+            textViewCity.setText(singletonForSaveState.getCity());
             btnShowWeatherInInternet.setVisibility(View.VISIBLE);
             buttonShowWeather.setVisibility(View.VISIBLE);
             generateWeather();
-            showWeather();
         } else {
             btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
             buttonShowWeather.setVisibility(View.INVISIBLE);
@@ -131,37 +124,27 @@ public class FragmentWeather extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                if (singletonForSaveState.isCity()) {
-                    generateWeather();
-                    showWeather();
-                }
+                generateWeather();
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void generateWeather() {
-        arrayList.clear();
-        singletonForSaveState.setIsRain(random.nextInt(2) + 1);
-        int t = random.nextInt(15);
-        buttonShowWeather.setText(R.string.reload);
-        singletonForSaveState.setValueOfTemperature(t + 15);
-        singletonForSaveState.setValueOfSpeedOfWind(t / 2);
-        singletonForSaveState.setValueOfPressure(100 + t / 2);
-        arrayList.add(new int[]{singletonForSaveState.getValueOfTemperature(), singletonForSaveState.getIsRain()});
-        for (int i = 0; i < 4; i++) {
-            arrayList.add(new int[]{(random.nextInt(15) + 15), (random.nextInt(2) + 1)});
-        }
+        singletonForSaveState.getArrayList().clear();
+        singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
+//        singletonForSaveState.getWeatherFromInternet().updateForecastWeather();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
-    private void showWeather() {
+    public void showWeather() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
         AdapterForWeather adapter;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adapter = new AdapterForWeather(arrayList, 5);
+            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
         } else {
-            adapter = new AdapterForWeather(arrayList, 1);
+            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 1);
         }
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
