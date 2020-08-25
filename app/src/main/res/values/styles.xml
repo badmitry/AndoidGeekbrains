@@ -1,12 +1,12 @@
 <resources>
 
-    <style name="lightStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="lightStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="darkStyle" parent="Theme.MaterialComponents">
+    <style name="darkStyle" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

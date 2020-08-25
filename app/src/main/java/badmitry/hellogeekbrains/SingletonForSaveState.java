@@ -2,6 +2,8 @@ package badmitry.hellogeekbrains;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
 
@@ -17,6 +19,12 @@ public class SingletonForSaveState implements Serializable {
     private FragmentWeather fragmentWeather;
     private WeatherFromInternet weatherFromInternet;
     private ArrayList<String[]> arrayList = new ArrayList<>();
+    private Set<String> history = new HashSet<>();
+
+    public Set<String> getHistory() {
+        return history;
+    }
+
     public ArrayList<String[]> getArrayList() {
         return arrayList;
     }

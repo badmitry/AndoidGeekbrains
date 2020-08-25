@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 import badmitry.hellogeekbrains.R;
 
-public class AdapterRLV extends RecyclerView.Adapter<AdapterRLV.ViewHolder> {
+public class AdapterChooseCity extends RecyclerView.Adapter<AdapterChooseCity.ViewHolder> {
 
     private ArrayList<String> data;
     OnItemClicker onItemClicker;
 
-    public AdapterRLV(ArrayList<String> data, OnItemClicker onItemClicker) {
+    public AdapterChooseCity(ArrayList<String> data, OnItemClicker onItemClicker) {
         this.data = data;
         this.onItemClicker = onItemClicker;
     }

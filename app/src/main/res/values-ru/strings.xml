@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Моя погода</string>
-    <string name="city" translatable="false">Мой город</string>
+    <string name="city" translatable="false">Выбрать город</string>
     <string name="rainy" translatable="false">Дождь</string>
     <string name="sun" translatable="false">Солнечно</string>
     <string name="cloud" translatable="false">Облачно</string>
@@ -24,4 +24,8 @@
     <string name="settingsMenu">Настройки</string>
     <string name="developers">Разработчики</string>
     <string name="connection_is_not">Соединение не установлено</string>
+    <string name="weather">Погода</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="history">История</string>
 </resources>

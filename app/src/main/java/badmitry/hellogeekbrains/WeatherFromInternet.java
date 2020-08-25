@@ -1,5 +1,6 @@
 package badmitry.hellogeekbrains;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
@@ -57,7 +58,8 @@ public class WeatherFromInternet {
                             public void run() {
                                 singletonForSaveState.setValueOfPressure((double) 3 / 4 * weatherRequest.getMain().getPressure());
                                 singletonForSaveState.setValueOfSpeedOfWind(weatherRequest.getWind().getSpeed());
-                                singletonForSaveState.getArrayList().add(new String[]{(weatherRequest.getMain().getTemp() - 273.5) + "",
+                                @SuppressLint("DefaultLocale") String temp = String.format("%2.1f", (weatherRequest.getMain().getTemp() - 273.5));
+                                singletonForSaveState.getArrayList().add(new String[]{temp,
                                         weatherRequest.getWeather()[0].getIcon()});
                                 updateForecastWeather();
                             }
@@ -120,7 +122,8 @@ public class WeatherFromInternet {
                                 for (int unixDatum : unixData) {
                                     for (int j = 0; j < weatherForecastRequest.getList().length; j++) {
                                         if (weatherForecastRequest.getList()[j].getDt() == unixDatum) {
-                                            singletonForSaveState.getArrayList().add(new String[]{(weatherForecastRequest.getList()[j].getMain().getTemp() - 273.5) + "",
+                                            @SuppressLint("DefaultLocale") String temp = String.format("%2.1f", (weatherForecastRequest.getList()[j].getMain().getTemp() - 273.5));
+                                            singletonForSaveState.getArrayList().add(new String[]{temp,
                                                     weatherForecastRequest.getList()[j].getWeather()[0].getIcon()});
                                         }
                                     }

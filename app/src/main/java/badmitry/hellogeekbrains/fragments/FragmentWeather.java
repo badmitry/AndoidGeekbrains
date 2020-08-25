@@ -19,14 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import badmitry.hellogeekbrains.ChooseCityActivity;
+import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 
 public class FragmentWeather extends Fragment {
 
-    private final int REQUEST_CODE_CITY = 1;
     private Button buttonShowWeather;
     private TextView textViewCity;
     private Button btnShowWeatherInInternet;
@@ -73,9 +72,9 @@ public class FragmentWeather extends Fragment {
             textViewCity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), ChooseCityActivity.class);
-                    intent.putExtra("isDarkTheme", singletonForSaveState.isDarkTheme());
-                    startActivityForResult(intent, REQUEST_CODE_CITY);
+                    MainActivity ma = (MainActivity) getActivity();
+                    assert ma != null;
+                    ma.setChooseCityFragment();
                 }
             });
         }
@@ -133,7 +132,6 @@ public class FragmentWeather extends Fragment {
     private void generateWeather() {
         singletonForSaveState.getArrayList().clear();
         singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
-//        singletonForSaveState.getWeatherFromInternet().updateForecastWeather();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

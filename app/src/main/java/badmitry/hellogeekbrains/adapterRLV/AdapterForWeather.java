@@ -13,8 +13,10 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -42,6 +44,7 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
         return new ViewHolder(v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String[] arr = data.get(position);
@@ -58,6 +61,7 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
         private TextView textViewTemperature;
         private ImageView imageViewWeather;
         private TextView date;
+        private TextView dayOfWeek;
         SimpleDateFormat simpleDateFormat;
 
         @SuppressLint("SimpleDateFormat")
@@ -67,13 +71,17 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
             textViewTemperature = item.findViewById(R.id.textViewTemperature);
             imageViewWeather = item.findViewById(R.id.imageViewWeather);
             date = item.findViewById(R.id.date);
+            dayOfWeek = item.findViewById(R.id.dayOfWeak);
             simpleDateFormat = new SimpleDateFormat("dd-MM:");
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
         void setTextAndPicture(String[] arr) {
+            DayOfWeek dow = ((GregorianCalendar) calendar).toZonedDateTime().getDayOfWeek();
             String CELSIUS = "\u2103";
             date.setText(simpleDateFormat.format(calendar.getTime()));
+            dayOfWeek.setText(dow.toString());
             textViewTemperature.setText(arr[0] + " " + CELSIUS);
             switch (arr[1]) {
                 case "01d":

@@ -1,6 +1,5 @@
 package badmitry.hellogeekbrains.fragments;
 
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -21,9 +20,10 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
-import badmitry.hellogeekbrains.adapterRLV.AdapterRLV;
+import badmitry.hellogeekbrains.adapterRLV.AdapterChooseCity;
 import badmitry.hellogeekbrains.adapterRLV.OnItemClicker;
 
 public class FragmentChooseCities extends Fragment implements OnItemClicker {
@@ -63,7 +63,7 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     private void initList() {
         listData.addAll(Arrays.asList(getResources().getStringArray(R.array.cities)));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
-        AdapterRLV adapter = new AdapterRLV(listData, this);
+        AdapterChooseCity adapter = new AdapterChooseCity(listData, this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -91,21 +91,16 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
             String cityFromList = listData.get(j);
             if (cityFromList.toLowerCase().equals(text.toLowerCase())) {
                 singletonForSaveState.setCity(cityFromList);
-                singletonForSaveState.getFragmentWeather().startCreateMainScreen();
+                singletonForSaveState.getHistory().add(cityFromList);
+                MainActivity ma = (MainActivity) this.getActivity();
+                assert ma != null;
+                ma.setHomeFragment();
                 checkCity = true;
                 editTextInputCity.setText("");
             }
         }
         if (!checkCity) {
             Snackbar.make(editTextInputCity,"City " + text + " don`t found", Snackbar.LENGTH_LONG).show();
-        } else {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                requireActivity().finish();
-            }
         }
-    }
-
-    public String getCityFromEditText() {
-        return editTextInputCity.getText().toString();
     }
 }

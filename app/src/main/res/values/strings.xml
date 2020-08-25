@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">My Weather</string>
-    <string name="city" translatable="false">My Сity</string>
+    <string name="city" translatable="false">Choose city</string>
     <string name="sun" translatable="false">Sun</string>
     <string name="rainy" translatable="false">Rainy</string>
     <string name="cloud" translatable="false">Cloud</string>
@@ -40,4 +40,8 @@
     <string name="todo" translatable="false">TODO</string>
     <string name="settingsMenu">settings</string>
     <string name="developers">developers</string>
+    <string name="weather">weather</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="history">history</string>
 </resources>

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/settings"
-        android:title="@string/settingsMenu"
-        android:icon="@android:drawable/ic_input_add"/>
+    <item android:id="@+id/history"
+        android:title="@string/history" />
 
     <item android:id="@+id/developers"
-        android:title="@string/developers"
-        android:icon="@android:drawable/ic_input_add"/>
+        android:title="@string/developers" />
 
 </menu>
