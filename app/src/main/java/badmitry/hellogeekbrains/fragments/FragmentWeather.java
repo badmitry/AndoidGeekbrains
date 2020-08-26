@@ -68,16 +68,14 @@ public class FragmentWeather extends Fragment {
     }
 
     private void setOnCityClkBehaviour() {
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            textViewCity.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    MainActivity ma = (MainActivity) getActivity();
-                    assert ma != null;
-                    ma.setChooseCityFragment();
-                }
-            });
-        }
+        textViewCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity ma = (MainActivity) getActivity();
+                assert ma != null;
+                ma.setChooseCityFragment();
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -138,12 +136,7 @@ public class FragmentWeather extends Fragment {
     @SuppressLint("SetTextI18n")
     public void showWeather() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
-        AdapterForWeather adapter;
-//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
-//        } else {
-//            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 1);
-//        }
+        AdapterForWeather adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
         textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
