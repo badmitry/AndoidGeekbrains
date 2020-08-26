@@ -139,11 +139,11 @@ public class FragmentWeather extends Fragment {
     public void showWeather() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
         AdapterForWeather adapter;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
-        } else {
-            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 1);
-        }
+//        } else {
+//            adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 1);
+//        }
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
         textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));

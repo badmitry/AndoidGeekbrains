@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
 import badmitry.hellogeekbrains.fragments.FragmentChooseCities;
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void setHomeFragment() {
         FragmentWeather fragment = new FragmentWeather();
         setFragment(fragment);
+        navigationView.setCheckedItem(R.id.nav_weather);
     }
 
     private void setFragment(Fragment fragment) {
@@ -125,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setChooseCityFragment() {
         setFragment(new FragmentChooseCities());
+        navigationView.setCheckedItem(R.id.nav_city);
     }
 
     private void setSettingsFragment() {
         setFragment(new FragmentSettings());
+        navigationView.setCheckedItem(R.id.nav_settings);
     }
 
     private void setDevelopersFragment() {
