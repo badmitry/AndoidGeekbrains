@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,18 +150,7 @@ public class FragmentWeather extends Fragment {
             @Override
             public void run() {
                 textViewCity.setVisibility(View.VISIBLE);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.warning)
-                        .setMessage(R.string.connection_failed)
-                        .setIcon(R.mipmap.weather)
-                        .setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        System.out.println(1);
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                Log.d("TAG", "run: ");
             }
         });
     }
