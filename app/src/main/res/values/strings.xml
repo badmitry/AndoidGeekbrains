@@ -20,7 +20,7 @@
     <string name="white_theme">Light theme</string>
     <string name="show_weather_in_internet">Show weather in internet</string>
     <string name="empty_list">Empty list</string>
-    <string name="connection_is_not">Сonnection not established</string>
+    <string name="connection_failed">Сonnection not established</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <!-- Preference Titles -->
@@ -44,4 +44,5 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="history">history</string>
+    <string name="warning">Warning!</string>
 </resources>

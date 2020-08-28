@@ -1,8 +1,9 @@
 package badmitry.hellogeekbrains.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,28 +81,10 @@ public class FragmentWeather extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCreateMainScreen() {
+        btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
+        buttonShowWeather.setVisibility(View.INVISIBLE);
         if (singletonForSaveState.isCity()) {
-            textViewCity.setText(singletonForSaveState.getCity());
-            btnShowWeatherInInternet.setVisibility(View.VISIBLE);
-            buttonShowWeather.setVisibility(View.VISIBLE);
-            generateWeather();
-        } else {
-            btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
-            buttonShowWeather.setVisibility(View.INVISIBLE);
-        }
-        if (singletonForSaveState.isShowSpeedOfWind()) {
-            textViewSpeedWind.setVisibility(View.VISIBLE);
-            textViewSpeedWindSign.setVisibility(View.VISIBLE);
-        } else {
-            textViewSpeedWind.setVisibility(View.INVISIBLE);
-            textViewSpeedWindSign.setVisibility(View.INVISIBLE);
-        }
-        if (singletonForSaveState.isShowPressure()) {
-            textViewPressure.setVisibility(View.VISIBLE);
-            textViewPressureSign.setVisibility(View.VISIBLE);
-        } else {
-            textViewPressure.setVisibility(View.INVISIBLE);
-            textViewPressureSign.setVisibility(View.INVISIBLE);
+            reloadWeather();
         }
     }
 
@@ -121,14 +104,13 @@ public class FragmentWeather extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
-                generateWeather();
+                reloadWeather();
             }
         });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void generateWeather() {
-        singletonForSaveState.getArrayList().clear();
+    private void reloadWeather() {
         singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
     }
 
@@ -141,5 +123,42 @@ public class FragmentWeather extends Fragment {
         recyclerView.setAdapter(adapter);
         textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
         textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
+        textViewCity.setText(singletonForSaveState.getCity());
+        btnShowWeatherInInternet.setVisibility(View.VISIBLE);
+        buttonShowWeather.setVisibility(View.VISIBLE);
+        if (singletonForSaveState.isShowSpeedOfWind()) {
+            textViewSpeedWind.setVisibility(View.VISIBLE);
+            textViewSpeedWindSign.setVisibility(View.VISIBLE);
+        } else {
+            textViewSpeedWind.setVisibility(View.INVISIBLE);
+            textViewSpeedWindSign.setVisibility(View.INVISIBLE);
+        }
+        if (singletonForSaveState.isShowPressure()) {
+            textViewPressure.setVisibility(View.VISIBLE);
+            textViewPressureSign.setVisibility(View.VISIBLE);
+        } else {
+            textViewPressure.setVisibility(View.INVISIBLE);
+            textViewPressureSign.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void alertAboutConnectionFailed() {
+        this.requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.connection_failed)
+                        .setIcon(R.mipmap.weather)
+                        .setPositiveButton(R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        System.out.println(1);
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }

@@ -23,9 +23,10 @@
     <string name="empty_list">Пустой список</string>
     <string name="settingsMenu">Настройки</string>
     <string name="developers">Разработчики</string>
-    <string name="connection_is_not">Соединение не установлено</string>
+    <string name="connection_failed">Соединение не установлено</string>
     <string name="weather">Погода</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="history">История</string>
+    <string name="warning">Внимание!</string>
 </resources>

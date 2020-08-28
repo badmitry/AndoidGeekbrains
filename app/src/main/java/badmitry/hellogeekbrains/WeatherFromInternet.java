@@ -4,11 +4,9 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -59,18 +57,15 @@ public class WeatherFromInternet {
                                 singletonForSaveState.setValueOfPressure((double) 3 / 4 * weatherRequest.getMain().getPressure());
                                 singletonForSaveState.setValueOfSpeedOfWind(weatherRequest.getWind().getSpeed());
                                 @SuppressLint("DefaultLocale") String temp = String.format("%2.1f", (weatherRequest.getMain().getTemp() - 273.5));
+                                singletonForSaveState.getArrayList().clear();
                                 singletonForSaveState.getArrayList().add(new String[]{temp,
                                         weatherRequest.getWeather()[0].getIcon()});
                                 updateForecastWeather();
                             }
                         });
-                    } catch (SocketTimeoutException e){
-                        View view = singletonForSaveState.getFragmentWeather().getView();
-                        assert view != null;
-                        Snackbar.make(view, view.getResources().getString(R.string.connection_is_not), Snackbar.LENGTH_LONG).show();
-                        Log.d("!!!!",  view.getResources().getString(R.string.connection_is_not));
                     } catch (IOException e) {
                         e.printStackTrace();
+                        exceptionCatch();
                     } finally {
                         if (urlConnection != null) {
                             urlConnection.disconnect();
@@ -133,6 +128,7 @@ public class WeatherFromInternet {
                         });
                     } catch (IOException e) {
                         e.printStackTrace();
+                        exceptionCatch();
                     } finally {
                         if (urlConnection != null) {
                             urlConnection.disconnect();
@@ -143,5 +139,9 @@ public class WeatherFromInternet {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void exceptionCatch() {
+        singletonForSaveState.getFragmentWeather().alertAboutConnectionFailed();
     }
 }
