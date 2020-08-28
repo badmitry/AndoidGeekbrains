@@ -84,6 +84,7 @@ public class FragmentWeather extends Fragment {
         btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
         buttonShowWeather.setVisibility(View.INVISIBLE);
         if (singletonForSaveState.isCity()) {
+            textViewCity.setVisibility(View.INVISIBLE);
             reloadWeather();
         }
     }
@@ -126,6 +127,7 @@ public class FragmentWeather extends Fragment {
         textViewCity.setText(singletonForSaveState.getCity());
         btnShowWeatherInInternet.setVisibility(View.VISIBLE);
         buttonShowWeather.setVisibility(View.VISIBLE);
+        textViewCity.setVisibility(View.VISIBLE);
         if (singletonForSaveState.isShowSpeedOfWind()) {
             textViewSpeedWind.setVisibility(View.VISIBLE);
             textViewSpeedWindSign.setVisibility(View.VISIBLE);
@@ -146,6 +148,7 @@ public class FragmentWeather extends Fragment {
         this.requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                textViewCity.setVisibility(View.VISIBLE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.warning)
                         .setMessage(R.string.connection_failed)
