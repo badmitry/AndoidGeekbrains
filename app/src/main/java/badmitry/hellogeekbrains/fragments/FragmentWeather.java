@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
+import badmitry.hellogeekbrains.view.Thermometer;
 
 public class FragmentWeather extends Fragment {
 
@@ -36,6 +38,7 @@ public class FragmentWeather extends Fragment {
     private TextView textViewSpeedWind;
     private TextView textViewPressure;
     private SingletonForSaveState singletonForSaveState;
+    private FrameLayout imageThermometer;
     private RecyclerView recyclerView;
 
     @Nullable
@@ -98,6 +101,7 @@ public class FragmentWeather extends Fragment {
         textViewSpeedWind = view.findViewById(R.id.textViewSpeedWind);
         textViewPressure = view.findViewById(R.id.textViewPressure);
         btnShowWeatherInInternet = view.findViewById(R.id.btnShowWeatherInInternet);
+        imageThermometer = view.findViewById(R.id.imageThermometer);
         recyclerView = view.findViewById(R.id.recyclerViewForWeather);
     }
 
@@ -150,8 +154,25 @@ public class FragmentWeather extends Fragment {
             @Override
             public void run() {
                 textViewCity.setVisibility(View.VISIBLE);
-                Log.d("TAG", "run: ");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.warning)
+                        .setMessage(R.string.connection_failed)
+                        .setIcon(R.mipmap.weather)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Log.d("netConnection", getString(R.string.connection_failed));
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         });
+    }
+
+    public void drawThermometer() {
+        Thermometer thermometer = new Thermometer(requireActivity().getApplicationContext());
+        imageThermometer.addView(thermometer);
     }
 }

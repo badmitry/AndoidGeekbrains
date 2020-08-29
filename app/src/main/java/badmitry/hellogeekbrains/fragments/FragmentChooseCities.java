@@ -1,7 +1,10 @@
 package badmitry.hellogeekbrains.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +17,6 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,7 +101,28 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
             }
         }
         if (!checkCity) {
-            Snackbar.make(editTextInputCity,"City " + text + " don`t found", Snackbar.LENGTH_LONG).show();
+            alertWrongChooseCity(text);
         }
+    }
+
+    private void alertWrongChooseCity(String text) {
+        final String alert = "City " + text + " don`t found";
+        this.requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.warning)
+                        .setMessage(alert)
+                        .setIcon(R.mipmap.weather)
+                        .setPositiveButton(R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Log.d("WrongChooseCity", alert);
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }

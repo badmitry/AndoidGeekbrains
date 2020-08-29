@@ -3,7 +3,6 @@ package badmitry.hellogeekbrains;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -13,7 +12,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.stream.Collectors;
@@ -124,6 +122,7 @@ public class WeatherFromInternet {
                                     }
                                 }
                                 singletonForSaveState.getFragmentWeather().showWeather();
+                                singletonForSaveState.getFragmentWeather().drawThermometer();
                             }
                         });
                     } catch (IOException e) {

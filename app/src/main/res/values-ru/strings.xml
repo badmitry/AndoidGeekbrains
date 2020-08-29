@@ -27,6 +27,7 @@
     <string name="weather">Погода</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="history">История</string>
+    <string name="historyMyCities">Мои города</string>
     <string name="warning">Внимание!</string>
+    <string name="dismiss_from_choose_history_city">Отмена</string>
 </resources>

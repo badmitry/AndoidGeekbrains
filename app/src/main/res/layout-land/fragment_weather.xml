@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_weather"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -28,6 +29,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.01"
         tools:ignore="MissingConstraints" />
+
+    <FrameLayout
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageThermometer"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myCity"
+        app:layout_constraintStart_toEndOf="@+id/myCity"
+        tools:ignore="MissingConstraints">
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForWeather"
