@@ -38,9 +38,9 @@
     </string>
     <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <string name="todo" translatable="false">TODO</string>
-    <string name="settingsMenu">settings</string>
-    <string name="developers">developers</string>
-    <string name="weather">weather</string>
+    <string name="settingsMenu">Settings</string>
+    <string name="developers">Developers</string>
+    <string name="weather">Weather</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="historyMyCities">My Cities</string>
