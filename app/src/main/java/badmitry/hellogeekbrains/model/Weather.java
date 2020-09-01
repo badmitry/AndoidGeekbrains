@@ -1,6 +1,8 @@
 package badmitry.hellogeekbrains.model;
 
-public class Weather {
+import java.io.Serializable;
+
+public class Weather implements Serializable {
     private String main;
     private String description;
     private String icon;

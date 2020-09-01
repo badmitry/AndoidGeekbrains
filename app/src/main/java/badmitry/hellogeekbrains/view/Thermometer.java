@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -64,7 +63,6 @@ public class Thermometer extends View {
         degreePaint = new Paint();
         if (singletonForSaveState.isCity()) {
             level = Double.parseDouble(singletonForSaveState.getArrayList().get(0)[0].replace(",", "."));
-            Log.d("TAG", singletonForSaveState.getArrayList().get(0)[0]);
             if (level > 0) {
                 colorDegree = Color.RED;
             } else {

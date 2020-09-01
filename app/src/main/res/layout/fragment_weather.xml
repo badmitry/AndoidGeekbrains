@@ -34,14 +34,12 @@
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewForWeather"
+    <ProgressBar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/marginStart_marginEnd"
-        android:layoutAnimation="@anim/anim"
-        app:layout_constraintTop_toBottomOf="@+id/buttonShowWeather"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="30dp"
+        android:id="@+id/progressBarr"
+        app:layout_constraintTop_toBottomOf="@id/myCity"
+        android:visibility="invisible"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonShowWeather"
@@ -55,6 +53,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myCity"
         tools:ignore="MissingConstraints,OnClick" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewForWeather"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/marginStart_marginEnd"
+        android:layoutAnimation="@anim/anim"
+        app:layout_constraintTop_toBottomOf="@+id/buttonShowWeather"
+        tools:ignore="MissingConstraints" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textViewSpeedWind"

@@ -1,6 +1,8 @@
 package badmitry.hellogeekbrains.model;
 
-public class List {
+import java.io.Serializable;
+
+public class List implements Serializable {
     private double dt;
     private Wind wind;
     private Main main;

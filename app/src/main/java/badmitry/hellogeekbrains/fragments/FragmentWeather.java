@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
+import badmitry.hellogeekbrains.services.ServiceOfInternetConnection;
 import badmitry.hellogeekbrains.view.Thermometer;
 
 public class FragmentWeather extends Fragment {
@@ -39,6 +41,7 @@ public class FragmentWeather extends Fragment {
     private TextView textViewPressure;
     private SingletonForSaveState singletonForSaveState;
     private FrameLayout imageThermometer;
+    private ProgressBar progressBar;
     private RecyclerView recyclerView;
 
     @Nullable
@@ -85,8 +88,10 @@ public class FragmentWeather extends Fragment {
     public void startCreateMainScreen() {
         btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
         buttonShowWeather.setVisibility(View.INVISIBLE);
+
         if (singletonForSaveState.isCity()) {
             textViewCity.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             reloadWeather();
         }
     }
@@ -100,6 +105,7 @@ public class FragmentWeather extends Fragment {
         textViewPressure = view.findViewById(R.id.textViewPressure);
         btnShowWeatherInInternet = view.findViewById(R.id.btnShowWeatherInInternet);
         imageThermometer = view.findViewById(R.id.imageThermometer);
+        progressBar = view.findViewById(R.id.progressBarr);
         recyclerView = view.findViewById(R.id.recyclerViewForWeather);
     }
 
@@ -114,35 +120,42 @@ public class FragmentWeather extends Fragment {
     }
 
     private void reloadWeather() {
-        singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
+        ServiceOfInternetConnection.startServiceOfInternetConnection(requireActivity());
+//        singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
     }
 
     @SuppressLint("SetTextI18n")
     public void showWeather() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
-        AdapterForWeather adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-        textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
-        textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
-        textViewCity.setText(singletonForSaveState.getCity());
-        btnShowWeatherInInternet.setVisibility(View.VISIBLE);
-        buttonShowWeather.setVisibility(View.VISIBLE);
-        textViewCity.setVisibility(View.VISIBLE);
-        if (singletonForSaveState.isShowSpeedOfWind()) {
-            textViewSpeedWind.setVisibility(View.VISIBLE);
-            textViewSpeedWindSign.setVisibility(View.VISIBLE);
-        } else {
-            textViewSpeedWind.setVisibility(View.INVISIBLE);
-            textViewSpeedWindSign.setVisibility(View.INVISIBLE);
-        }
-        if (singletonForSaveState.isShowPressure()) {
-            textViewPressure.setVisibility(View.VISIBLE);
-            textViewPressureSign.setVisibility(View.VISIBLE);
-        } else {
-            textViewPressure.setVisibility(View.INVISIBLE);
-            textViewPressureSign.setVisibility(View.INVISIBLE);
-        }
+        this.requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
+                AdapterForWeather adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(adapter);
+                textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
+                textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
+                textViewCity.setText(singletonForSaveState.getCity());
+                progressBar.setVisibility(View.INVISIBLE);
+                btnShowWeatherInInternet.setVisibility(View.VISIBLE);
+                buttonShowWeather.setVisibility(View.VISIBLE);
+                textViewCity.setVisibility(View.VISIBLE);
+                if (singletonForSaveState.isShowSpeedOfWind()) {
+                    textViewSpeedWind.setVisibility(View.VISIBLE);
+                    textViewSpeedWindSign.setVisibility(View.VISIBLE);
+                } else {
+                    textViewSpeedWind.setVisibility(View.INVISIBLE);
+                    textViewSpeedWindSign.setVisibility(View.INVISIBLE);
+                }
+                if (singletonForSaveState.isShowPressure()) {
+                    textViewPressure.setVisibility(View.VISIBLE);
+                    textViewPressureSign.setVisibility(View.VISIBLE);
+                } else {
+                    textViewPressure.setVisibility(View.INVISIBLE);
+                    textViewPressureSign.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     public void alertAboutConnectionFailed() {
@@ -168,7 +181,12 @@ public class FragmentWeather extends Fragment {
     }
 
     public void drawThermometer() {
-        Thermometer thermometer = new Thermometer(requireActivity().getApplicationContext());
-        imageThermometer.addView(thermometer);
+        this.requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Thermometer thermometer = new Thermometer(requireActivity().getApplicationContext());
+                imageThermometer.addView(thermometer);
+            }
+        });
     }
 }

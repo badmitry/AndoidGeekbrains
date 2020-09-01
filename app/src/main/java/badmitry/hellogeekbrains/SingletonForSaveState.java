@@ -17,7 +17,6 @@ public class SingletonForSaveState implements Serializable {
     private double valueOfPressure;
     private boolean isDarkTheme;
     private FragmentWeather fragmentWeather;
-    private WeatherFromInternet weatherFromInternet;
     private ArrayList<String[]> arrayList = new ArrayList<>();
     private Set<String> history = new HashSet<>();
 
@@ -29,8 +28,7 @@ public class SingletonForSaveState implements Serializable {
         return arrayList;
     }
 
-    private SingletonForSaveState() {
-        weatherFromInternet = new WeatherFromInternet(this);
+    private SingletonForSaveState(){
     }
 
     public static SingletonForSaveState getInstance() {
@@ -38,10 +36,6 @@ public class SingletonForSaveState implements Serializable {
             instance = new SingletonForSaveState();
         }
         return instance;
-    }
-
-    public WeatherFromInternet getWeatherFromInternet() {
-        return weatherFromInternet;
     }
 
     public void setFragmentWeather(FragmentWeather fragmentWeather) {
