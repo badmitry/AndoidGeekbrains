@@ -1,10 +1,7 @@
 package badmitry.hellogeekbrains;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Handler;
-
-import androidx.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 
@@ -14,7 +11,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -29,13 +25,11 @@ public class WeatherFromInternet {
         this.singletonForSaveState = singletonForSaveState;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateCurrentWeather() {
         try {
             final URL uri = new URL("https://api.openweathermap.org/data/2.5/weather?q=" + singletonForSaveState.getCity() + "&lang=ru&appid=94b18bc70bd073ad490a67a7c6ceb146");
             final Handler handler = new Handler();
             new Thread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
                     HttpsURLConnection urlConnection = null;
@@ -49,7 +43,6 @@ public class WeatherFromInternet {
                         Gson gson = new Gson();
                         final WeatherRequest weatherRequest = gson.fromJson(result, WeatherRequest.class);
                         handler.post(new Runnable() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void run() {
                                 singletonForSaveState.setValueOfPressure((double) 3 / 4 * weatherRequest.getMain().getPressure());
@@ -77,12 +70,26 @@ public class WeatherFromInternet {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private String getLines(BufferedReader in) {
-        return in.lines().collect(Collectors.joining("\n"));
+        StringBuilder rawData = new StringBuilder(1024);
+        String tempVariable;
+        while (true) {
+            try {
+                tempVariable = in.readLine();
+                if (tempVariable == null) break;
+                rawData.append(tempVariable).append("\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rawData.toString();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateForecastWeather() {
         final int[] unixData = new int[4];
         Calendar calendar = Calendar.getInstance();
@@ -96,7 +103,6 @@ public class WeatherFromInternet {
             final URL uri = new URL("https://api.openweathermap.org/data/2.5/forecast?q=" + singletonForSaveState.getCity() + "&appid=c0c4a4b4047b97ebc5948ac9c48c0559");
             final Handler handler = new Handler();
             new Thread(new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
                     HttpsURLConnection urlConnection = null;
@@ -109,7 +115,6 @@ public class WeatherFromInternet {
                         Gson gson = new Gson();
                         final WeatherForecastRequest weatherForecastRequest = gson.fromJson(result, WeatherForecastRequest.class);
                         handler.post(new Runnable() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void run() {
                                 for (int unixDatum : unixData) {

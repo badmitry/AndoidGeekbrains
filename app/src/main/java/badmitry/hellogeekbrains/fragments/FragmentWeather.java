@@ -47,7 +47,6 @@ public class FragmentWeather extends Fragment {
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,7 +82,6 @@ public class FragmentWeather extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void startCreateMainScreen() {
         btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
         buttonShowWeather.setVisibility(View.INVISIBLE);
@@ -115,12 +113,10 @@ public class FragmentWeather extends Fragment {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void reloadWeather() {
         singletonForSaveState.getWeatherFromInternet().updateCurrentWeather();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     public void showWeather() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());

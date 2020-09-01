@@ -85,7 +85,6 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public void changeCityOnMainLayout(String text) {
         boolean checkCity = false;
         for (int j = 0; j < listData.size(); j++) {

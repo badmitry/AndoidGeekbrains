@@ -1,7 +1,6 @@
 package badmitry.hellogeekbrains.adapterRLV;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -28,7 +24,6 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
     Calendar calendar;
     SingletonForSaveState singletonForSaveState;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public AdapterForWeather(ArrayList<String[]> data, int arraySize) {
         this.data = data;
         this.arraySize = arraySize;
@@ -44,7 +39,6 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
         return new ViewHolder(v);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String[] arr = data.get(position);
@@ -75,13 +69,14 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
             simpleDateFormat = new SimpleDateFormat("dd-MM:");
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @SuppressLint("SetTextI18n")
         void setTextAndPicture(String[] arr) {
-            DayOfWeek dow = ((GregorianCalendar) calendar).toZonedDateTime().getDayOfWeek();
+            String[] daysOfWeeks = singletonForSaveState.getFragmentWeather().requireActivity().getResources().getStringArray(R.array.DaysOfWeeks);
+            int dayOfWeeks = (calendar.get(Calendar.DAY_OF_WEEK));
+            String dow = daysOfWeeks[dayOfWeeks-1];
             String CELSIUS = "\u2103";
             date.setText(simpleDateFormat.format(calendar.getTime()));
-            dayOfWeek.setText(dow.toString());
+            dayOfWeek.setText(dow);
             textViewTemperature.setText(arr[0] + " " + CELSIUS);
             switch (arr[1]) {
                 case "01d":
