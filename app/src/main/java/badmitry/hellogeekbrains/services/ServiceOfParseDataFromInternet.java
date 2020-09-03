@@ -15,7 +15,6 @@ public class ServiceOfParseDataFromInternet extends IntentService {
     private static final String ACTION = "parse";
     private static final String EXTRA_PARAM1 = "PARAM1";
     private static final String EXTRA_PARAM2 = "PARAM2";
-    private SingletonForSaveState singletonForSaveState;
 
     public ServiceOfParseDataFromInternet() {
         super("ServiceOfParseDataFromInternet");
@@ -32,7 +31,7 @@ public class ServiceOfParseDataFromInternet extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            singletonForSaveState = SingletonForSaveState.getInstance();
+            SingletonForSaveState singletonForSaveState = SingletonForSaveState.getInstance();
             singletonForSaveState.getArrayList().clear();
             WeatherRequest weatherRequest = (WeatherRequest) intent.getSerializableExtra(EXTRA_PARAM1);
             WeatherForecastRequest weatherForecastRequest = (WeatherForecastRequest) intent.getSerializableExtra(EXTRA_PARAM2);
