@@ -7,6 +7,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageViewBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription" />
+
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"

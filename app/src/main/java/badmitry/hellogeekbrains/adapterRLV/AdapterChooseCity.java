@@ -56,12 +56,9 @@ public class AdapterChooseCity extends RecyclerView.Adapter<AdapterChooseCity.Vi
         }
 
         void setOnClickOnItem(final String text) {
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (onItemClicker != null) {
-                        onItemClicker.onItemClicked(text);
-                    }
+            textView.setOnClickListener(view -> {
+                if (onItemClicker != null) {
+                    onItemClicker.onItemClicked(text);
                 }
             });
         }

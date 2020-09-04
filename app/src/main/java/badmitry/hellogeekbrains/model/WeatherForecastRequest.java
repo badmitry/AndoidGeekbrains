@@ -1,15 +1,9 @@
 package badmitry.hellogeekbrains.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class WeatherForecastRequest implements Serializable {
-    private List[] list;
-
-    public List[] getList() {
-        return list;
-    }
-
-    public void setList(List[] list) {
-        this.list = list;
-    }
+    @SerializedName("list") public Data[] list;
 }

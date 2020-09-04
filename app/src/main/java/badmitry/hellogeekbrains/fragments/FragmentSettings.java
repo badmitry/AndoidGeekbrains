@@ -1,6 +1,5 @@
 package badmitry.hellogeekbrains.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import badmitry.hellogeekbrains.MainActivity;
@@ -48,13 +46,7 @@ public class FragmentSettings extends Fragment {
     }
 
     private void setOnButtonOkClkBehaviour() {
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View view) {
-                changeSettingsOnMainLayout();
-            }
-        });
+        buttonOk.setOnClickListener(view -> changeSettingsOnMainLayout());
     }
 
     private void initViews(View view) {
@@ -65,7 +57,6 @@ public class FragmentSettings extends Fragment {
         radioBtnLightTheme = view.findViewById(R.id.radioBtnLightTheme);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void changeSettingsOnMainLayout() {
         singletonForSaveState.setShowPressure(checkBoxPressure.isChecked());
         singletonForSaveState.setShowSpeedOfWind(checkBoxSpeedOfWind.isChecked());

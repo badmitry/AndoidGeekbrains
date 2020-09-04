@@ -12,12 +12,6 @@
         android:roundIcon="@mipmap/weather"
         android:supportsRtl="true"
         android:theme="@style/lightStyle">
-        <service
-            android:name=".services.ServiceOfParseDataFromInternet"
-            android:exported="false" />
-        <service
-            android:name=".services.ServiceOfInternetConnection"
-            android:exported="false" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 
 public class Thermometer extends View {
-    private final int thermometerColor = Color.GRAY;
     private int colorDegree = Color.RED;
     private RectF thermometerRectangle = new RectF();
     private Rect degreeRectangle = new Rect();
@@ -58,6 +57,7 @@ public class Thermometer extends View {
 
     private void init() {
         thermometerPaint = new Paint();
+        int thermometerColor = Color.GRAY;
         thermometerPaint.setColor(thermometerColor);
         thermometerPaint.setStyle(Paint.Style.FILL);
         degreePaint = new Paint();

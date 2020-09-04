@@ -1,7 +1,12 @@
 package badmitry.hellogeekbrains;
 
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,14 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -106,28 +103,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setOnClickForSlideMenuItems() {
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_weather: {
-                        setHomeFragment();
-                        drawer.closeDrawers();
-                        break;
-                    }
-                    case R.id.nav_city: {
-                        setChooseCityFragment();
-                        drawer.closeDrawers();
-                        break;
-                    }
-                    case R.id.nav_settings: {
-                        setSettingsFragment();
-                        drawer.closeDrawers();
-                        break;
-                    }
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_weather: {
+                    setHomeFragment();
+                    drawer.closeDrawers();
+                    break;
                 }
-                return true;
+                case R.id.nav_city: {
+                    setChooseCityFragment();
+                    drawer.closeDrawers();
+                    break;
+                }
+                case R.id.nav_settings: {
+                    setSettingsFragment();
+                    drawer.closeDrawers();
+                    break;
+                }
             }
+            return true;
         });
     }
 
@@ -152,33 +146,19 @@ public class MainActivity extends AppCompatActivity {
         final String[] items = itemss;
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.historyMyCities)
-                .setSingleChoiceItems(items, chosen[0], new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int item) {
-                        chosen[0] = item;
-                    }
-                })
-                .setNegativeButton(R.string.dismiss_from_choose_history_city, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                .setSingleChoiceItems(items, chosen[0], (dialogInterface, item) -> chosen[0] = item)
+                .setNegativeButton(R.string.dismiss_from_choose_history_city, (dialogInterface, i) -> Log.d("alert", getResources().getString(R.string.dismiss_from_choose_history_city)))
+                .setPositiveButton("Ок", (dialogInterface, i) -> {
+                    if (chosen[0] == -1) {
                         Log.d("alert", getResources().getString(R.string.dismiss_from_choose_history_city));
-                    }
-                })
-                .setPositiveButton("Ок", new DialogInterface.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if (chosen[0] == -1) {
-                            Log.d("alert", getResources().getString(R.string.dismiss_from_choose_history_city));
-                        } else {
-                            singletonForSaveState.setCity(items[chosen[0]]);
-                            @SuppressLint("ResourceType") FragmentWeather fragmentWeather = (FragmentWeather)
-                                    getSupportFragmentManager().findFragmentByTag(homeFragment);
-                            if (fragmentWeather != null && fragmentWeather.isVisible()) {
-                                singletonForSaveState.getFragmentWeather().startCreateMainScreen();
-                            }else {
-                                setHomeFragment();
-                            }
+                    } else {
+                        singletonForSaveState.setCity(items[chosen[0]]);
+                        @SuppressLint("ResourceType") FragmentWeather fragmentWeather = (FragmentWeather)
+                                getSupportFragmentManager().findFragmentByTag(homeFragment);
+                        if (fragmentWeather != null && fragmentWeather.isVisible()) {
+                            singletonForSaveState.getFragmentWeather().startCreateMainScreen();
+                        }else {
+                            setHomeFragment();
                         }
                     }
                 });

@@ -1,8 +1,6 @@
 package badmitry.hellogeekbrains.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +45,6 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         setEditTextFromChoseCityBehavior();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClicked(String text) {
         changeCityOnMainLayout(text);
@@ -70,18 +66,14 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     }
 
     private void setEditTextFromChoseCityBehavior() {
-        editTextInputCity.setOnKeyListener(new View.OnKeyListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (i == KeyEvent.KEYCODE_ENTER)) {
-                    String text = editTextInputCity.getText().toString();
-                    changeCityOnMainLayout(text);
-                    return true;
-                }
-                return false;
+        editTextInputCity.setOnKeyListener((view, i, keyEvent) -> {
+            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+                    (i == KeyEvent.KEYCODE_ENTER)) {
+                String text = editTextInputCity.getText().toString();
+                changeCityOnMainLayout(text);
+                return true;
             }
+            return false;
         });
     }
 
@@ -106,22 +98,15 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
 
     private void alertWrongChooseCity(String text) {
         final String alert = "City " + text + " don`t found";
-        this.requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(R.string.warning)
-                        .setMessage(alert)
-                        .setIcon(R.mipmap.weather)
-                        .setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Log.d("WrongChooseCity", alert);
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
+        this.requireActivity().runOnUiThread(() -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.warning)
+                    .setMessage(alert)
+                    .setIcon(R.mipmap.weather)
+                    .setPositiveButton(R.string.ok,
+                            (dialog, id) -> Log.d("WrongChooseCity", alert));
+            AlertDialog alert1 = builder.create();
+            alert1.show();
         });
     }
 }
