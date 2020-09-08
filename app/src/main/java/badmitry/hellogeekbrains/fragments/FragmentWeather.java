@@ -195,6 +195,7 @@ public class FragmentWeather extends Fragment {
                 setBackgroundImage();
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                insertNewCityInHistory();
             }
             textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
             textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
@@ -218,7 +219,6 @@ public class FragmentWeather extends Fragment {
                 textViewPressureSign.setVisibility(View.INVISIBLE);
             }
         });
-        insertNewCityInHistory();
     }
 
     private void insertNewCityInHistory() {

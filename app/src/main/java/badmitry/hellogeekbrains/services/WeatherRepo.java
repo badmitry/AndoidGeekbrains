@@ -33,15 +33,15 @@ public class WeatherRepo {
 
     private IForecast createAdapterForecast() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(1, TimeUnit.SECONDS)
-                .readTimeout(1, TimeUnit.SECONDS)
-                .writeTimeout(1, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
 
         Retrofit adapter = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org")
-                .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return adapter.create(IForecast.class);
     }
