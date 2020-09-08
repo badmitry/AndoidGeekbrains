@@ -46,4 +46,7 @@
     <string name="historyMyCities">My Cities</string>
     <string name="warning">Warning!</string>
     <string name="dismiss_from_choose_history_city">Dismiss</string>
+    <string name="show_pressure" translatable="false">ShowPressure</string>
+    <string name="show_speed" translatable="false">ShowSpeed</string>
+    <string name="is_dark_theme" translatable="false">DarkTheme</string>
 </resources>

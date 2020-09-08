@@ -1,5 +1,8 @@
 package badmitry.hellogeekbrains.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +60,18 @@ public class FragmentSettings extends Fragment {
         radioBtnLightTheme = view.findViewById(R.id.radioBtnLightTheme);
     }
 
+    @SuppressLint("ApplySharedPref")
     private void changeSettingsOnMainLayout() {
+        SharedPreferences sharedPreferences = this.requireActivity()
+                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
         singletonForSaveState.setShowPressure(checkBoxPressure.isChecked());
+        editor.putBoolean(getString(R.string.show_pressure), checkBoxPressure.isChecked());
         singletonForSaveState.setShowSpeedOfWind(checkBoxSpeedOfWind.isChecked());
+        editor.putBoolean(getString(R.string.show_speed), checkBoxSpeedOfWind.isChecked());
         singletonForSaveState.setDarkTheme(radioBtnDarkTheme.isChecked());
+        editor.putBoolean(getString(R.string.is_dark_theme), radioBtnDarkTheme.isChecked());
+        editor.commit();
         MainActivity ma = (MainActivity) this.getActivity();
         assert ma != null;
         ma.recreate();

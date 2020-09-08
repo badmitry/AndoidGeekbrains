@@ -1,6 +1,8 @@
 package badmitry.hellogeekbrains;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,10 +19,16 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.List;
+
 import badmitry.hellogeekbrains.fragments.FragmentChooseCities;
 import badmitry.hellogeekbrains.fragments.FragmentDevelopers;
 import badmitry.hellogeekbrains.fragments.FragmentSettings;
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
+import badmitry.hellogeekbrains.room.App;
+import badmitry.hellogeekbrains.room.CitySource;
+import badmitry.hellogeekbrains.room.HistoryCity;
+import badmitry.hellogeekbrains.room.InterfaceDAO;
 
 public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
@@ -31,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         singletonForSaveState = SingletonForSaveState.getInstance();
+        singletonForSaveState.setDarkTheme(sharedPreferences.getBoolean(getString(R.string.is_dark_theme), false));
+        singletonForSaveState.setShowPressure(sharedPreferences.getBoolean(getString(R.string.show_pressure), false));
+        singletonForSaveState.setShowSpeedOfWind(sharedPreferences.getBoolean(getString(R.string.show_speed), false));
+        singletonForSaveState.setCity(sharedPreferences.getString("City", null));
         if (singletonForSaveState.isDarkTheme()) {
             setTheme(R.style.darkStyle);
         } else {
@@ -141,9 +154,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void choseHistoryCity() {
         final int[] chosen = {-1};
-        String[] itemss = new String[singletonForSaveState.getHistory().size()];
-        itemss = singletonForSaveState.getHistory().toArray(itemss);
-        final String[] items = itemss;
+        InterfaceDAO interfaceDAO = App.getInstance().getInterfaceDao();
+        CitySource citySource = new CitySource(interfaceDAO);
+        List<HistoryCity> itemss = citySource.getHistoryCities();
+        String CELSIUS = "\u2103";
+        final String[] items = new String[itemss.size()];
+        for (int i = 0; i < itemss.size(); i++) {
+            items[i] = itemss.get(i).city + " "+ itemss.get(i).temp +" " + CELSIUS + " " + itemss.get(i).date;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.historyMyCities)
                 .setSingleChoiceItems(items, chosen[0], (dialogInterface, item) -> chosen[0] = item)
@@ -152,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     if (chosen[0] == -1) {
                         Log.d("alert", getResources().getString(R.string.dismiss_from_choose_history_city));
                     } else {
-                        singletonForSaveState.setCity(items[chosen[0]]);
+                        singletonForSaveState.setCity(itemss.get(chosen[0]).city);
                         @SuppressLint("ResourceType") FragmentWeather fragmentWeather = (FragmentWeather)
                                 getSupportFragmentManager().findFragmentByTag(homeFragment);
                         if (fragmentWeather != null && fragmentWeather.isVisible()) {
