@@ -49,4 +49,5 @@
     <string name="show_pressure" translatable="false">ShowPressure</string>
     <string name="show_speed" translatable="false">ShowSpeed</string>
     <string name="is_dark_theme" translatable="false">DarkTheme</string>
+    <string name="wrong_city">You choose wrong city</string>
 </resources>

@@ -174,6 +174,8 @@ public class FragmentWeather extends Fragment {
                             singletonForSaveState.getFragmentWeather().drawThermometer();
                         }
                     });
+                } else {
+                    alertAboutWrongCity();
                 }
             }
 
@@ -293,6 +295,23 @@ public class FragmentWeather extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.warning)
                     .setMessage(R.string.connection_failed)
+                    .setIcon(R.mipmap.weather)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.ok,
+                            (dialog, id) -> Log.d("netConnection", getString(R.string.connection_failed)));
+            AlertDialog alert = builder.create();
+            alert.show();
+        });
+    }
+
+    public void alertAboutWrongCity() {
+        this.requireActivity();
+        this.requireActivity().runOnUiThread(() -> {
+            textViewCity.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.warning)
+                    .setMessage(R.string.wrong_city)
                     .setIcon(R.mipmap.weather)
                     .setCancelable(false)
                     .setPositiveButton(R.string.ok,

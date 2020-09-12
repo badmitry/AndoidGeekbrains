@@ -30,4 +30,5 @@
     <string name="historyMyCities">Мои города</string>
     <string name="warning">Внимание!</string>
     <string name="dismiss_from_choose_history_city">Отмена</string>
+    <string name="wrong_city">Вы выбрали несуществующий город</string>
 </resources>
