@@ -1,8 +1,6 @@
 package badmitry.hellogeekbrains.fragments;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,35 +76,11 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     }
 
     public void changeCityOnMainLayout(String text) {
-        boolean checkCity = false;
-        for (int j = 0; j < listData.size(); j++) {
-            String cityFromList = listData.get(j);
-            if (cityFromList.toLowerCase().equals(text.toLowerCase())) {
-                singletonForSaveState.setCity(cityFromList);
-                singletonForSaveState.getHistory().add(cityFromList);
-                MainActivity ma = (MainActivity) this.getActivity();
-                assert ma != null;
-                ma.setHomeFragment();
-                checkCity = true;
-                editTextInputCity.setText("");
-            }
-        }
-        if (!checkCity) {
-            alertWrongChooseCity(text);
-        }
-    }
-
-    private void alertWrongChooseCity(String text) {
-        final String alert = "City " + text + " don`t found";
-        this.requireActivity().runOnUiThread(() -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle(R.string.warning)
-                    .setMessage(alert)
-                    .setIcon(R.mipmap.weather)
-                    .setPositiveButton(R.string.ok,
-                            (dialog, id) -> Log.d("WrongChooseCity", alert));
-            AlertDialog alert1 = builder.create();
-            alert1.show();
-        });
+        singletonForSaveState.setCity(text);
+        singletonForSaveState.getHistory().add(text);
+        MainActivity ma = (MainActivity) this.getActivity();
+        assert ma != null;
+        ma.setHomeFragment();
+        editTextInputCity.setText("");
     }
 }
