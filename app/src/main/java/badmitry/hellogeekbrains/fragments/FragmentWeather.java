@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
@@ -31,6 +33,10 @@ import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 import badmitry.hellogeekbrains.model.WeatherForecastRequest;
 import badmitry.hellogeekbrains.model.WeatherRequest;
+import badmitry.hellogeekbrains.room.App;
+import badmitry.hellogeekbrains.room.CitySource;
+import badmitry.hellogeekbrains.room.HistoryCity;
+import badmitry.hellogeekbrains.room.InterfaceDAO;
 import badmitry.hellogeekbrains.services.WeatherRepo;
 import badmitry.hellogeekbrains.view.Thermometer;
 import retrofit2.Call;
@@ -50,6 +56,7 @@ public class FragmentWeather extends Fragment {
     private FrameLayout imageThermometer;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
+    private CitySource citySource;
 
     @Nullable
     @Override
@@ -108,6 +115,8 @@ public class FragmentWeather extends Fragment {
         imageThermometer = view.findViewById(R.id.imageThermometer);
         progressBar = view.findViewById(R.id.progressBarr);
         recyclerView = view.findViewById(R.id.recyclerViewForWeather);
+        InterfaceDAO interfaceDAO = App.getInstance().getInterfaceDao();
+        citySource = new CitySource(interfaceDAO);
     }
 
     private void setOnBtnShowWeatherClkBehaviour() {
@@ -186,6 +195,7 @@ public class FragmentWeather extends Fragment {
                 setBackgroundImage();
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+                insertNewCityInHistory();
             }
             textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
             textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
@@ -209,6 +219,16 @@ public class FragmentWeather extends Fragment {
                 textViewPressureSign.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void insertNewCityInHistory() {
+        HistoryCity historyCity = new HistoryCity();
+        historyCity.city = singletonForSaveState.getCity();
+        historyCity.temp = singletonForSaveState.getArrayList().get(0)[0];
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdfDate = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        historyCity.date = sdfDate.format(now);
+        citySource.addCity(historyCity);
     }
 
     private void setBackgroundImage() {
@@ -266,6 +286,7 @@ public class FragmentWeather extends Fragment {
     }
 
     public void alertAboutConnectionFailed() {
+        this.requireActivity();
         this.requireActivity().runOnUiThread(() -> {
             textViewCity.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
