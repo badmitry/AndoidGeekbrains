@@ -151,7 +151,6 @@ public class FragmentWeather extends Fragment {
                                     calendar1.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 12, 0, 0);
                                     unixData[i] = (int) (calendar1.getTimeInMillis() / 1000);
                                 }
-
                                 for (int unixDatum : unixData) {
                                     for (int j = 0; j < weatherForecastRequest.list.length; j++) {
                                         if (weatherForecastRequest.list[j].dt == unixDatum) {

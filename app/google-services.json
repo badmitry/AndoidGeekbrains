@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "414125779801",
+    "firebase_url": "https://hellogeekbrains.firebaseio.com",
+    "project_id": "hellogeekbrains",
+    "storage_bucket": "hellogeekbrains.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414125779801:android:bbe2aee6f7a11effca3a48",
+        "android_client_info": {
+          "package_name": "badmitry.hellogeekbrains"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414125779801-lp32fp2g9o2fea9ldlrklhmp1mf0akf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "badmitry.hellogeekbrains",
+            "certificate_hash": "032bcc933f87f67610b6111cae55255afe7b13df"
+          }
+        },
+        {
+          "client_id": "414125779801-e2d69574af3mcljtrgokse8809lnqno0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQuCDk-B_osmcF9TcSn2UW8RIorsAoBdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414125779801-e2d69574af3mcljtrgokse8809lnqno0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

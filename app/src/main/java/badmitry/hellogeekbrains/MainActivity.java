@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,8 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
+import java.util.Objects;
 
 import badmitry.hellogeekbrains.fragments.FragmentChooseCities;
 import badmitry.hellogeekbrains.fragments.FragmentDevelopers;
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private SingletonForSaveState singletonForSaveState;
     private final String homeFragment = "HomeFragment";
-    private CheckEthernetConnectionService checkEthernetConnectionService;
 
 
     @Override
@@ -68,14 +67,8 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         setHomeFragment();
         setOnClickForSlideMenuItems();
-        registerReceiver(checkEthernetConnectionService, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
         initNotificationChannel();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(checkEthernetConnectionService);
+        initGetToken();
     }
 
     private void initNotificationChannel() {
@@ -85,8 +78,20 @@ public class MainActivity extends AppCompatActivity {
             NotificationChannel channel = new NotificationChannel("2", "name", importance);
             notificationManager.createNotificationChannel(channel);
         }
-
     }
+
+    private void initGetToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("PushMessage", "getInstanceId failed", task.getException());
+                        return;
+                    }
+                    String token = Objects.requireNonNull(task.getResult()).getToken();
+                    Log.d("token", token);
+                });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
