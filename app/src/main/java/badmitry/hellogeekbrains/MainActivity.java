@@ -1,8 +1,13 @@
 package badmitry.hellogeekbrains;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private SingletonForSaveState singletonForSaveState;
     private final String homeFragment = "HomeFragment";
+    private CheckEthernetConnectionService checkEthernetConnectionService;
 
 
     @Override
@@ -62,6 +68,24 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         setHomeFragment();
         setOnClickForSlideMenuItems();
+        registerReceiver(checkEthernetConnectionService, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+        initNotificationChannel();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(checkEthernetConnectionService);
+    }
+
+    private void initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("2", "name", importance);
+            notificationManager.createNotificationChannel(channel);
+        }
+
     }
 
     @Override

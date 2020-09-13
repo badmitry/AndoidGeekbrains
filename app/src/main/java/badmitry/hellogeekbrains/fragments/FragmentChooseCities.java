@@ -1,5 +1,8 @@
 package badmitry.hellogeekbrains.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -75,12 +78,19 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         });
     }
 
+    @SuppressLint("ApplySharedPref")
     public void changeCityOnMainLayout(String text) {
+        SharedPreferences sharedPreferences = this.requireActivity()
+                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("City", text);
+        editor.commit();
         singletonForSaveState.setCity(text);
         singletonForSaveState.getHistory().add(text);
         MainActivity ma = (MainActivity) this.getActivity();
         assert ma != null;
         ma.setHomeFragment();
         editTextInputCity.setText("");
+
     }
 }
