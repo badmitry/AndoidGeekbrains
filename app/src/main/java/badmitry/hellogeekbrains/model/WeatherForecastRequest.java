@@ -6,4 +6,5 @@ import java.io.Serializable;
 
 public class WeatherForecastRequest implements Serializable {
     @SerializedName("list") public Data[] list;
+    @SerializedName("city") public City city;
 }

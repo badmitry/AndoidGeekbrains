@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,16 +41,23 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private SingletonForSaveState singletonForSaveState;
     private final String homeFragment = "HomeFragment";
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         singletonForSaveState = SingletonForSaveState.getInstance();
         singletonForSaveState.setDarkTheme(sharedPreferences.getBoolean(getString(R.string.is_dark_theme), false));
         singletonForSaveState.setShowPressure(sharedPreferences.getBoolean(getString(R.string.show_pressure), false));
         singletonForSaveState.setShowSpeedOfWind(sharedPreferences.getBoolean(getString(R.string.show_speed), false));
         singletonForSaveState.setCity(sharedPreferences.getString("City", null));
+        singletonForSaveState.setIsCity(sharedPreferences.getBoolean("selected", false));
+        Log.d("!!!", "" + singletonForSaveState.isCity());
+        LocationManager mLocManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        singletonForSaveState.setLocationManager(mLocManager);
         if (singletonForSaveState.isDarkTheme()) {
             setTheme(R.style.darkStyle);
         } else {
@@ -69,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         setOnClickForSlideMenuItems();
         initNotificationChannel();
         initGetToken();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        setHomeFragment();
     }
 
     private void initNotificationChannel() {
@@ -144,10 +157,20 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    @SuppressLint("CommitPrefEdits")
     private void setOnClickForSlideMenuItems() {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_weather: {
+                    setHomeFragment();
+                    drawer.closeDrawers();
+                    break;
+                }
+                case R.id.nav_current_weather: {
+                    singletonForSaveState.setIsCity(false);
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("selected", false);
+                    Log.d("!!!", "" + sharedPreferences.getBoolean("selected", false));
                     setHomeFragment();
                     drawer.closeDrawers();
                     break;

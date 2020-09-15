@@ -83,6 +83,7 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         SharedPreferences sharedPreferences = this.requireActivity()
                 .getSharedPreferences("Settings", Context.MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
+        singletonForSaveState.setIsCity(true);
         editor.putString("City", text);
         editor.commit();
         singletonForSaveState.setCity(text);

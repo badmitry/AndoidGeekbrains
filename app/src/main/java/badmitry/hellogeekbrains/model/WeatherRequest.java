@@ -9,4 +9,5 @@ public class WeatherRequest implements Serializable {
     @SerializedName("main") public Main main;
     @SerializedName("weather") public Weather[] weather;
     @SerializedName("cod") public String cod;
+    @SerializedName("name") public String name;
 }

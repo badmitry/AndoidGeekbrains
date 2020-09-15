@@ -12,6 +12,11 @@
             android:background="@android:color/transparent"
             android:title="@string/weather" />
         <item
+            android:id="@+id/nav_current_weather"
+            android:icon="@drawable/city"
+            android:background="@android:color/transparent"
+            android:title="@string/current_weather" />
+        <item
             android:id="@+id/nav_city"
             android:icon="@drawable/city"
             android:background="@android:color/transparent"

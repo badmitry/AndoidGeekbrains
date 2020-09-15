@@ -1,5 +1,7 @@
 package badmitry.hellogeekbrains;
 
+import android.location.LocationManager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ public class SingletonForSaveState implements Serializable {
 
     private static SingletonForSaveState instance;
     private String city;
+    private boolean selectedCity;
     private boolean showSpeedOfWind;
     private boolean showPressure;
     private double valueOfSpeedOfWind;
@@ -19,6 +22,15 @@ public class SingletonForSaveState implements Serializable {
     private FragmentWeather fragmentWeather;
     private ArrayList<String[]> arrayList = new ArrayList<>();
     private Set<String> history = new HashSet<>();
+    private LocationManager locationManager;
+
+    public void setLocationManager(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
+    public LocationManager getLocationManager() {
+        return locationManager;
+    }
 
     public Set<String> getHistory() {
         return history;
@@ -97,6 +109,10 @@ public class SingletonForSaveState implements Serializable {
     }
 
     public boolean isCity() {
-        return city != null;
+        return selectedCity;
+    }
+
+    public void setIsCity(boolean selectedCity) {
+        this.selectedCity = selectedCity;
     }
 }

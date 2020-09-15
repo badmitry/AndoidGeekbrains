@@ -1,9 +1,14 @@
 package badmitry.hellogeekbrains.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,11 +39,11 @@ import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterForWeather;
 import badmitry.hellogeekbrains.model.WeatherForecastRequest;
 import badmitry.hellogeekbrains.model.WeatherRequest;
+import badmitry.hellogeekbrains.retrofitForSelectedCity.WeatherRepo;
 import badmitry.hellogeekbrains.room.App;
 import badmitry.hellogeekbrains.room.CitySource;
 import badmitry.hellogeekbrains.room.HistoryCity;
 import badmitry.hellogeekbrains.room.InterfaceDAO;
-import badmitry.hellogeekbrains.services.WeatherRepo;
 import badmitry.hellogeekbrains.view.Thermometer;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,11 +102,12 @@ public class FragmentWeather extends Fragment {
     public void startCreateMainScreen() {
         btnShowWeatherInInternet.setVisibility(View.INVISIBLE);
         buttonShowWeather.setVisibility(View.INVISIBLE);
-
+        textViewCity.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         if (singletonForSaveState.isCity()) {
-            textViewCity.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-            reloadWeather();
+            reloadWeatherForSelectedCity();
+        } else {
+            reloadWeatherForCurrentCity();
         }
     }
 
@@ -120,13 +127,19 @@ public class FragmentWeather extends Fragment {
     }
 
     private void setOnBtnShowWeatherClkBehaviour() {
-        buttonShowWeather.setOnClickListener(view -> reloadWeather());
+        buttonShowWeather.setOnClickListener(view -> {
+            if (singletonForSaveState.isCity()) {
+                reloadWeatherForSelectedCity();
+            } else {
+                reloadWeatherForCurrentCity();
+            }
+        });
     }
 
-    private void reloadWeather() {
+    private void reloadWeatherForSelectedCity() {
         WeatherRepo weatherRepo = WeatherRepo.getInstance();
         singletonForSaveState.getArrayList().clear();
-        weatherRepo.getAPIWeather().loadWeather(singletonForSaveState.getCity(),
+        weatherRepo.getApiWeatherForSelectedCity().loadWeather(singletonForSaveState.getCity(),
                 "ru", "94b18bc70bd073ad490a67a7c6ceb146").enqueue(new Callback<WeatherRequest>() {
             @Override
             public void onResponse(@NonNull Call<WeatherRequest> call, @NonNull Response<WeatherRequest> response) {
@@ -136,7 +149,8 @@ public class FragmentWeather extends Fragment {
                     singletonForSaveState.setValueOfSpeedOfWind(weatherRequest.wind.speed);
                     @SuppressLint("DefaultLocale") String temp = String.format("%2.1f", (weatherRequest.main.temp - 273.5));
                     singletonForSaveState.getArrayList().add(new String[]{temp, weatherRequest.weather[0].icon});
-                    weatherRepo.getAPIForecast().loadWeather(singletonForSaveState.getCity(),
+                    textViewCity.setText(singletonForSaveState.getCity());
+                    weatherRepo.getApiForecastForSelectedCity().loadWeather(singletonForSaveState.getCity(),
                             "ru", "c0c4a4b4047b97ebc5948ac9c48c0559").enqueue(new Callback<WeatherForecastRequest>() {
                         @Override
                         public void onResponse(@NonNull Call<WeatherForecastRequest> call, @NonNull Response<WeatherForecastRequest> response) {
@@ -187,6 +201,92 @@ public class FragmentWeather extends Fragment {
         });
     }
 
+    private void reloadWeatherForCurrentCity() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+        } else {
+            LocationManager mLocManager = singletonForSaveState.getLocationManager();
+            Location loc = null;
+            try {
+                loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assert loc != null;
+            String lon = loc.getLongitude() + "";
+            String lat = loc.getLatitude() + "";
+            WeatherRepo weatherRepo = WeatherRepo.getInstance();
+            singletonForSaveState.getArrayList().clear();
+            weatherRepo.getApiWeatherForCurrentCity().loadWeather(lon, lat,
+                    "ru", "94b18bc70bd073ad490a67a7c6ceb146").enqueue(new Callback<WeatherRequest>() {
+                @Override
+                public void onResponse(@NonNull Call<WeatherRequest> call, @NonNull Response<WeatherRequest> response) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        WeatherRequest weatherRequest = response.body();
+                        singletonForSaveState.setValueOfPressure((double) 3 / 4 * weatherRequest.main.pressure);
+                        singletonForSaveState.setValueOfSpeedOfWind(weatherRequest.wind.speed);
+                        @SuppressLint("DefaultLocale") String temp = String.format("%2.1f", (weatherRequest.main.temp - 273.5));
+                        singletonForSaveState.getArrayList().add(new String[]{temp, weatherRequest.weather[0].icon});
+                        textViewCity.setText(weatherRequest.name);
+                        weatherRepo.getApiForecastForCurrentCity().loadWeather(lon, lat,
+                                "ru", "c0c4a4b4047b97ebc5948ac9c48c0559").enqueue(new Callback<WeatherForecastRequest>() {
+                            @Override
+                            public void onResponse(@NonNull Call<WeatherForecastRequest> call, @NonNull Response<WeatherForecastRequest> response) {
+                                if (response.body() != null && response.isSuccessful()) {
+                                    WeatherForecastRequest weatherForecastRequest = response.body();
+
+                                    final int[] unixData = new int[4];
+                                    Calendar calendar = Calendar.getInstance();
+                                    for (int i = 0; i < 4; i++) {
+                                        calendar.add(Calendar.DAY_OF_YEAR, 1);
+                                        Calendar calendar1 = Calendar.getInstance();
+                                        calendar1.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 12, 0, 0);
+                                        unixData[i] = (int) (calendar1.getTimeInMillis() / 1000);
+                                    }
+                                    for (int unixDatum : unixData) {
+                                        for (int j = 0; j < weatherForecastRequest.list.length; j++) {
+                                            if (weatherForecastRequest.list[j].dt == unixDatum) {
+                                                @SuppressLint("DefaultLocale") String tempString =
+                                                        String.format("%2.1f", (weatherForecastRequest.list[j].main.temp - 273.5));
+                                                singletonForSaveState.getArrayList().add(new String[]{tempString,
+                                                        weatherForecastRequest.list[j].weather[0].icon});
+                                            }
+                                        }
+                                    }
+                                    singletonForSaveState.getFragmentWeather().showWeather();
+                                    singletonForSaveState.getFragmentWeather().drawThermometer();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<WeatherForecastRequest> call, @NonNull Throwable t) {
+                                alertAboutConnectionFailed();
+                                singletonForSaveState.getFragmentWeather().showWeather();
+                                singletonForSaveState.getFragmentWeather().drawThermometer();
+                            }
+                        });
+                    } else {
+                        alertAboutWrongCity();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<WeatherRequest> call, @NonNull Throwable t) {
+                    alertAboutConnectionFailed();
+                    singletonForSaveState.getFragmentWeather().showWeather();
+                    singletonForSaveState.getFragmentWeather().drawThermometer();
+                }
+            });
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     public void showWeather() {
         this.requireActivity().runOnUiThread(() -> {
@@ -200,7 +300,6 @@ public class FragmentWeather extends Fragment {
             }
             textViewPressure.setText(singletonForSaveState.getValueOfPressure() + getString(R.string.mm));
             textViewSpeedWind.setText(singletonForSaveState.getValueOfSpeedOfWind() + getString(R.string.mInS));
-            textViewCity.setText(singletonForSaveState.getCity());
             progressBar.setVisibility(View.INVISIBLE);
             btnShowWeatherInInternet.setVisibility(View.VISIBLE);
             buttonShowWeather.setVisibility(View.VISIBLE);
@@ -283,7 +382,6 @@ public class FragmentWeather extends Fragment {
         } else {
             imageView.setAlpha((float) 0.5);
         }
-
     }
 
     public void alertAboutConnectionFailed() {
