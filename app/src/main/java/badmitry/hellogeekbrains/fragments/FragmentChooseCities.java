@@ -85,9 +85,11 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
         singletonForSaveState.setIsCity(true);
         editor.putString("City", text);
+        editor.putBoolean(getString(R.string.selected_city), true);
         editor.commit();
         singletonForSaveState.setCity(text);
         singletonForSaveState.getHistory().add(text);
+        singletonForSaveState.setLatLng(null);
         MainActivity ma = (MainActivity) this.getActivity();
         assert ma != null;
         ma.setHomeFragment();

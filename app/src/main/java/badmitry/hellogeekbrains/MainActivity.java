@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import java.util.Objects;
 
 import badmitry.hellogeekbrains.fragments.FragmentChooseCities;
 import badmitry.hellogeekbrains.fragments.FragmentDevelopers;
+import badmitry.hellogeekbrains.fragments.FragmentMap;
 import badmitry.hellogeekbrains.fragments.FragmentSettings;
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
 import badmitry.hellogeekbrains.room.App;
@@ -54,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
         singletonForSaveState.setShowPressure(sharedPreferences.getBoolean(getString(R.string.show_pressure), false));
         singletonForSaveState.setShowSpeedOfWind(sharedPreferences.getBoolean(getString(R.string.show_speed), false));
         singletonForSaveState.setCity(sharedPreferences.getString("City", null));
-        singletonForSaveState.setIsCity(sharedPreferences.getBoolean("selected", false));
-        Log.d("!!!", "" + singletonForSaveState.isCity());
+        singletonForSaveState.setIsCity(sharedPreferences.getBoolean(getString(R.string.selected_city), false));
         LocationManager mLocManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         singletonForSaveState.setLocationManager(mLocManager);
         if (singletonForSaveState.isDarkTheme()) {
@@ -81,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        setHomeFragment();
+        if(requestCode == 100) {
+            boolean permissionsGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+            if(permissionsGranted) recreate();
+        }
     }
 
     private void initNotificationChannel() {
@@ -127,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
             setHomeFragment();
             navigationView.setCheckedItem(R.id.nav_weather);
         }
-
     }
 
     private void handleMenuItemClick(MenuItem item) {
@@ -157,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    @SuppressLint("CommitPrefEdits")
+    @SuppressLint({"CommitPrefEdits", "ApplySharedPref"})
     private void setOnClickForSlideMenuItems() {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -168,15 +171,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.nav_current_weather: {
                     singletonForSaveState.setIsCity(false);
+                    singletonForSaveState.setLatLng(null);
                     editor = sharedPreferences.edit();
-                    editor.putBoolean("selected", false);
-                    Log.d("!!!", "" + sharedPreferences.getBoolean("selected", false));
+                    editor.putBoolean(getString(R.string.selected_city), false);
+                    editor.commit();
                     setHomeFragment();
                     drawer.closeDrawers();
                     break;
                 }
                 case R.id.nav_city: {
                     setChooseCityFragment();
+                    drawer.closeDrawers();
+                    break;
+                }
+                case R.id.nav_map: {
+                    setMapFragment();
                     drawer.closeDrawers();
                     break;
                 }
@@ -193,6 +202,11 @@ public class MainActivity extends AppCompatActivity {
     public void setChooseCityFragment() {
         setFragment(new FragmentChooseCities(), "");
         navigationView.setCheckedItem(R.id.nav_city);
+    }
+
+    public void setMapFragment() {
+        setFragment(new FragmentMap(), "");
+        navigationView.setCheckedItem(R.id.nav_map);
     }
 
     private void setSettingsFragment() {

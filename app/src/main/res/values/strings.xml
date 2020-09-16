@@ -51,4 +51,9 @@
     <string name="is_dark_theme" translatable="false">DarkTheme</string>
     <string name="wrong_city">You choose wrong city</string>
     <string name="current_weather">Current location</string>
+    <string name="google_maps_key">AIzaSyBsjeMNdVVfaiwPqtYkNNmY7PkKiRLydSI</string>
+    <string name="map">Weather in map</string>
+    <string name="selected_city" translatable="false">selected</string>
+    <string name="choose_point_on_map">Select a point on the map</string>
+    <string name="select_plase_on_map">OK</string>
 </resources>

@@ -2,6 +2,8 @@ package badmitry.hellogeekbrains;
 
 import android.location.LocationManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +25,15 @@ public class SingletonForSaveState implements Serializable {
     private ArrayList<String[]> arrayList = new ArrayList<>();
     private Set<String> history = new HashSet<>();
     private LocationManager locationManager;
+    private LatLng latLng;
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
 
     public void setLocationManager(LocationManager locationManager) {
         this.locationManager = locationManager;

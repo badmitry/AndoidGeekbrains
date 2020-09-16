@@ -32,4 +32,7 @@
     <string name="dismiss_from_choose_history_city">Отмена</string>
     <string name="wrong_city">Вы выбрали несуществующий город</string>
     <string name="current_weather">Текущее положение</string>
+    <string name="map">Погода на карте</string>
+    <string name="choose_point_on_map">Выберите точку на карте</string>
+    <string name="select_plase_on_map">Выбрать</string>
 </resources>
