@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(getString(R.string.settings_shared_preferences), Context.MODE_PRIVATE);
         singletonForSaveState = SingletonForSaveState.getInstance();
         singletonForSaveState.setDarkTheme(sharedPreferences.getBoolean(getString(R.string.is_dark_theme), false));
         singletonForSaveState.setShowPressure(sharedPreferences.getBoolean(getString(R.string.show_pressure), false));

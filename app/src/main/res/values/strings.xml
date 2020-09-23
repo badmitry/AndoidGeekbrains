@@ -56,4 +56,7 @@
     <string name="selected_city" translatable="false">selected</string>
     <string name="choose_point_on_map">Select a point on the map</string>
     <string name="select_plase_on_map">OK</string>
+    <string name="unknown_city">Unknown city</string>
+    <string name="lang">en</string>
+    <string name="settings_shared_preferences" translatable="false">SettingsSharedPreferences</string>
 </resources>

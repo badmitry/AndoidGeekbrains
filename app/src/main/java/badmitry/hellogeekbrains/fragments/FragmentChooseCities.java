@@ -81,7 +81,7 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
     @SuppressLint("ApplySharedPref")
     public void changeCityOnMainLayout(String text) {
         SharedPreferences sharedPreferences = this.requireActivity()
-                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                .getSharedPreferences(getString(R.string.settings_shared_preferences), Context.MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
         singletonForSaveState.setIsCity(true);
         editor.putString("City", text);

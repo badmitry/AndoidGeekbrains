@@ -18,7 +18,7 @@ public class SingletonForSaveState implements Serializable {
     private boolean selectedCity;
     private boolean showSpeedOfWind;
     private boolean showPressure;
-    private double valueOfSpeedOfWind;
+    private String valueOfSpeedOfWind;
     private double valueOfPressure;
     private boolean isDarkTheme;
     private FragmentWeather fragmentWeather;
@@ -77,7 +77,7 @@ public class SingletonForSaveState implements Serializable {
         return showPressure;
     }
 
-    public double getValueOfSpeedOfWind() {
+    public String getValueOfSpeedOfWind() {
         return valueOfSpeedOfWind;
     }
 
@@ -97,7 +97,7 @@ public class SingletonForSaveState implements Serializable {
         this.showPressure = showPressure;
     }
 
-    public void setValueOfSpeedOfWind(double valueOfSpeedOfWind) {
+    public void setValueOfSpeedOfWind(String valueOfSpeedOfWind) {
         this.valueOfSpeedOfWind = valueOfSpeedOfWind;
     }
 

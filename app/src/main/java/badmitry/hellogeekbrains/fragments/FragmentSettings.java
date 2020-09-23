@@ -63,7 +63,7 @@ public class FragmentSettings extends Fragment {
     @SuppressLint("ApplySharedPref")
     private void changeSettingsOnMainLayout() {
         SharedPreferences sharedPreferences = this.requireActivity()
-                .getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                .getSharedPreferences(getString(R.string.settings_shared_preferences), Context.MODE_PRIVATE);
         @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sharedPreferences.edit();
         singletonForSaveState.setShowPressure(checkBoxPressure.isChecked());
         editor.putBoolean(getString(R.string.show_pressure), checkBoxPressure.isChecked());

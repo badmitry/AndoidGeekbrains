@@ -19,6 +19,13 @@ android {
         sourceCompatibility = "8"
     }
 
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard-rules.pro', getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+
 }
 
 dependencies {
