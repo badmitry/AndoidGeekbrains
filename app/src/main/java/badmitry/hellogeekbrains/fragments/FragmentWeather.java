@@ -103,11 +103,6 @@ public class FragmentWeather extends Fragment {
         textViewCity.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         LatLng latLng = singletonForSaveState.getLatLng();
-//        if (singletonForSaveState.isCity()) {
-//            loaderWeather.reloadWeatherForSelectedCity();
-//        } else {
-//            takeLocation();
-//        }
         if (latLng != null) {
             loaderWeather.reloadWeatherForCurrentCity(latLng.longitude + "", latLng.latitude + "");
         } else {
@@ -149,16 +144,20 @@ public class FragmentWeather extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         } else {
-            final LocationListener locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                }
-            };
-            LocationManager mLocManager = singletonForSaveState.getLocationManager();
-            mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, locationListener);
             try {
-                loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            } catch (Exception e) {
+                LocationListener locationListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                    }
+                };
+                LocationManager mLocManager = singletonForSaveState.getLocationManager();
+                mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, locationListener);
+                try {
+                    loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (AbstractMethodError e) {
                 e.printStackTrace();
             }
             if (loc == null) {
@@ -175,7 +174,7 @@ public class FragmentWeather extends Fragment {
     public void showWeather(String newCity) {
         if (newCity == null || newCity.equals("")) {
             city = getString(R.string.unknown_city);
-        }else {
+        } else {
             city = newCity;
         }
         this.requireActivity().runOnUiThread(() -> {
