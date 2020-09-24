@@ -22,12 +22,12 @@
     <string name="show_weather_in_internet">Показать погоду в интернете</string>
     <string name="empty_list">Пустой список</string>
     <string name="settingsMenu">Настройки</string>
-    <string name="developers">Разработчики</string>
+    <string name="developers">О программе</string>
     <string name="connection_failed">Соединение не установлено</string>
     <string name="weather">Погода</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="historyMyCities">Мои города</string>
+    <string name="historyMyCities">История запросов</string>
     <string name="warning">Внимание!</string>
     <string name="dismiss_from_choose_history_city">Отмена</string>
     <string name="wrong_city">Вы выбрали несуществующий город</string>
@@ -37,4 +37,5 @@
     <string name="select_plase_on_map">Выбрать</string>
     <string name="unknown_city">Неизвестный город</string>
     <string name="lang">ru</string>
+    <string name="list_developers">Разработчики:</string>
 </resources>

@@ -5,11 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +59,7 @@ public class FragmentWeather extends Fragment {
     private RecyclerView recyclerView;
     private CitySource citySource;
     private LoaderWeather loaderWeather;
+    private Location loc = null;
 
     @Nullable
     @Override
@@ -82,7 +83,6 @@ public class FragmentWeather extends Fragment {
     private void setOnBtnShowWeatherInInternet() {
         btnShowWeatherInInternet.setOnClickListener(view -> {
             String url = "https://yandex.ru/pogoda/" + city;
-            Log.d("!!!!", "setOnBtnShowWeatherInInternet: " + city);
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
@@ -103,6 +103,11 @@ public class FragmentWeather extends Fragment {
         textViewCity.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         LatLng latLng = singletonForSaveState.getLatLng();
+//        if (singletonForSaveState.isCity()) {
+//            loaderWeather.reloadWeatherForSelectedCity();
+//        } else {
+//            takeLocation();
+//        }
         if (latLng != null) {
             loaderWeather.reloadWeatherForCurrentCity(latLng.longitude + "", latLng.latitude + "");
         } else {
@@ -144,15 +149,20 @@ public class FragmentWeather extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         } else {
+            final LocationListener locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                }
+            };
             LocationManager mLocManager = singletonForSaveState.getLocationManager();
-            Location loc = null;
+            mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, locationListener);
             try {
                 loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (loc == null) {
-                loaderWeather.reloadWeatherForSelectedCity();
+                takeLocation();
             } else {
                 String lon = loc.getLongitude() + "";
                 String lat = loc.getLatitude() + "";
@@ -169,7 +179,7 @@ public class FragmentWeather extends Fragment {
             city = newCity;
         }
         this.requireActivity().runOnUiThread(() -> {
-            if (singletonForSaveState.getArrayList().size() > 0) {
+            if (singletonForSaveState.getArrayList().size() >= 5) {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
                 AdapterForWeather adapter = new AdapterForWeather(singletonForSaveState.getArrayList(), 5);
                 setBackgroundImage();

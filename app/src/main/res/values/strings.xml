@@ -39,11 +39,11 @@
     <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="settingsMenu">Settings</string>
-    <string name="developers">Developers</string>
+    <string name="developers">About me</string>
     <string name="weather">Weather</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="historyMyCities">My Cities</string>
+    <string name="historyMyCities">History</string>
     <string name="warning">Warning!</string>
     <string name="dismiss_from_choose_history_city">Dismiss</string>
     <string name="show_pressure" translatable="false">ShowPressure</string>
@@ -59,4 +59,5 @@
     <string name="unknown_city">Unknown city</string>
     <string name="lang">en</string>
     <string name="settings_shared_preferences" translatable="false">SettingsSharedPreferences</string>
+    <string name="list_developers">Developers:</string>
 </resources>

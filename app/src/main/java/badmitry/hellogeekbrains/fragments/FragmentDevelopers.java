@@ -1,5 +1,7 @@
 package badmitry.hellogeekbrains.fragments;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,18 @@ public class FragmentDevelopers extends Fragment {
 
     private void createList(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewForDevelopers);
+        PackageInfo packageInfo;
+        int versionNumber = 0;
+        String versionName = "0";
+        try {
+            packageInfo = requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0);
+            versionNumber = packageInfo.versionCode;
+            versionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        data.add("Version: " + versionNumber + "." + versionName);
+        data.add(getString(R.string.list_developers));
         data.addAll(Arrays.asList(getResources().getStringArray(R.array.developers)));
         AdapterForDevelopers adapterForDevelopers = new AdapterForDevelopers(data);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
