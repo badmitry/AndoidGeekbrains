@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -32,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import badmitry.hellogeekbrains.LocListener;
 import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
@@ -60,6 +60,8 @@ public class FragmentWeather extends Fragment {
     private CitySource citySource;
     private LoaderWeather loaderWeather;
     private Location loc = null;
+    private LocationManager locationManager = null;
+    private LocListener locationListener = null;
 
     @Nullable
     @Override
@@ -144,22 +146,17 @@ public class FragmentWeather extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
         } else {
+            if (locationListener == null) {
+                locationListener = new LocListener();
+            }
+            LocationManager mLocManager = singletonForSaveState.getLocationManager();
+            mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 10000, locationListener);
             try {
-                LocationListener locationListener = new LocationListener() {
-                    @Override
-                    public void onLocationChanged(@NonNull Location location) {
-                    }
-                };
-                LocationManager mLocManager = singletonForSaveState.getLocationManager();
-                mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, locationListener);
-                try {
-                    loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } catch (AbstractMethodError e) {
+                loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+
             if (loc == null) {
                 takeLocation();
             } else {
