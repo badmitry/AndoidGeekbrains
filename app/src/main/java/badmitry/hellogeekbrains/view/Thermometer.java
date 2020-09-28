@@ -61,7 +61,7 @@ public class Thermometer extends View {
         thermometerPaint.setColor(thermometerColor);
         thermometerPaint.setStyle(Paint.Style.FILL);
         degreePaint = new Paint();
-        if (singletonForSaveState.isCity()) {
+        if (singletonForSaveState.getArrayList().size() >= 5) {
             level = Double.parseDouble(singletonForSaveState.getArrayList().get(0)[0].replace(",", "."));
             if (level > 0) {
                 colorDegree = Color.RED;
@@ -91,9 +91,14 @@ public class Thermometer extends View {
         height = h - getPaddingTop() - getPaddingBottom();
         radius = (width - (2 * padding)) / 2;
         thermometerRectangle.set(padding, padding, width - padding, height - padding - (radius - padding));
-        cutCircleRect.set(2 * padding, 2 *padding, width - 2 * padding, height - 2 * padding - (radius - padding));
-        degreeRectangle.set(2 * padding, (int) ((height - padding - radius) * ((40 - level) / (double) 40)),
-                width - 2 * padding, height - padding - radius);
+        cutCircleRect.set(2 * padding, 2 * padding, width - 2 * padding, height - 2 * padding - (radius - padding));
+        if (level > 0){
+            degreeRectangle.set(2 * padding, (int) ((height - padding - radius) * ((40 - level) / (double) 40)),
+                    width - 2 * padding, height - padding - radius);
+        } else {
+            degreeRectangle.set(2 * padding, (int) ((height - padding - radius) * ((40 + level) / (double) 40)),
+                    width - 2 * padding, height - padding - radius);
+        }
     }
 
     @Override

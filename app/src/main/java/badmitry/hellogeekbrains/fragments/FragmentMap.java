@@ -3,6 +3,7 @@ package badmitry.hellogeekbrains.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.InflateException;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
+import badmitry.hellogeekbrains.location.LocTracker;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback {
     private SingletonForSaveState singletonForSaveState;
@@ -35,7 +37,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
     @SuppressLint("StaticFieldLeak")
     private static View view;
     private Button buttonOk;
+    private Button buttonPlus;
+    private Button buttonMinus;
     private LatLng latLng;
+    private LocTracker locTracker;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,14 +71,18 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
             }
         }
         initViews(view);
-        setOnButtonClkListener();
+        setOnButtonOkClkListener();
+        setOnButtonMinusClkListener();
+        setOnButtonPlusClkListener();
     }
 
     private void initViews(View view) {
         buttonOk = view.findViewById(R.id.select_marker);
+        buttonPlus = view.findViewById(R.id.plus);
+        buttonMinus = view.findViewById(R.id.minus);
     }
 
-    private void setOnButtonClkListener() {
+    private void setOnButtonOkClkListener() {
         buttonOk.setOnClickListener(view -> {
             if (latLng != null) {
                 singletonForSaveState.setLatLng(latLng);
@@ -87,8 +96,17 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    private void setOnButtonPlusClkListener() {
+        buttonPlus.setOnClickListener(view -> gMap.animateCamera(CameraUpdateFactory.zoomIn()));
+    }
+
+    private void setOnButtonMinusClkListener() {
+        buttonMinus.setOnClickListener(view -> gMap.animateCamera(CameraUpdateFactory.zoomOut()));
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Location location;
         gMap = googleMap;
         if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -99,7 +117,14 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
             gMap.setMyLocationEnabled(true);
             if (latLng != null) {
                 gMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-                gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8));
+            } else {
+                if (locTracker == null) {
+                    locTracker = new LocTracker(requireActivity());
+                }
+                location = locTracker.takeLocation();
+                LatLng newLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                moveCamera(newLatLng, 8);
             }
             gMap.setOnMapClickListener(latLng2 -> {
                 gMap.clear();
@@ -107,5 +132,10 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback {
                 latLng = latLng2;
             });
         }
+    }
+
+    private void moveCamera(LatLng target, float zoom) {
+        if (target == null || zoom < 1) return;
+        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(target, zoom));
     }
 }

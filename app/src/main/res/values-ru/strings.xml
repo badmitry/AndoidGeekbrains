@@ -38,4 +38,5 @@
     <string name="unknown_city">Неизвестный город</string>
     <string name="lang">ru</string>
     <string name="list_developers">Разработчики:</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
 </resources>

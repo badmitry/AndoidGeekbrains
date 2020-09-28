@@ -33,10 +33,10 @@ import badmitry.hellogeekbrains.fragments.FragmentDevelopers;
 import badmitry.hellogeekbrains.fragments.FragmentMap;
 import badmitry.hellogeekbrains.fragments.FragmentSettings;
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
-import badmitry.hellogeekbrains.room.App;
-import badmitry.hellogeekbrains.room.CitySource;
-import badmitry.hellogeekbrains.room.HistoryCity;
-import badmitry.hellogeekbrains.room.InterfaceDAO;
+import badmitry.hellogeekbrains.roomHistoryCities.App;
+import badmitry.hellogeekbrains.roomHistoryCities.CitySource;
+import badmitry.hellogeekbrains.roomHistoryCities.HistoryCity;
+import badmitry.hellogeekbrains.roomHistoryCities.InterfaceDAO;
 
 public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == 100) {
+        if (requestCode == 100) {
             boolean permissionsGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            if(permissionsGranted) recreate();
+            if (permissionsGranted) recreate();
         }
     }
 
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         String CELSIUS = "\u2103";
         final String[] items = new String[itemss.size()];
         for (int i = 0; i < itemss.size(); i++) {
-            items[i] = itemss.get(i).city + " "+ itemss.get(i).temp +" " + CELSIUS + " " + itemss.get(i).date;
+            items[i] = itemss.get(i).city + " " + itemss.get(i).temp + " " + CELSIUS + " " + itemss.get(i).date;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.historyMyCities)
@@ -237,11 +237,12 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("alert", getResources().getString(R.string.dismiss_from_choose_history_city));
                     } else {
                         singletonForSaveState.setCity(itemss.get(chosen[0]).city);
-                        @SuppressLint("ResourceType") FragmentWeather fragmentWeather = (FragmentWeather)
-                                getSupportFragmentManager().findFragmentByTag(homeFragment);
+                        singletonForSaveState.setLatLng(null);
+                        singletonForSaveState.setIsCity(true);
+                        FragmentWeather fragmentWeather = singletonForSaveState.getFragmentWeather();
                         if (fragmentWeather != null && fragmentWeather.isVisible()) {
-                            singletonForSaveState.getFragmentWeather().startCreateMainScreen();
-                        }else {
+                            fragmentWeather.startCreateMainScreen();
+                        } else {
                             setHomeFragment();
                         }
                     }

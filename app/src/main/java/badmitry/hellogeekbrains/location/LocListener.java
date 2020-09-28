@@ -1,4 +1,4 @@
-package badmitry.hellogeekbrains;
+package badmitry.hellogeekbrains.location;
 
 import android.location.Location;
 import android.location.LocationListener;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
+
+import badmitry.hellogeekbrains.SingletonForSaveState;
 
 public class LocListener implements LocationListener {
     private SingletonForSaveState singletonForSaveState;

@@ -9,16 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import badmitry.hellogeekbrains.R;
+import badmitry.hellogeekbrains.roomFavoritesCities.FavoriteCity;
 
 public class AdapterChooseCity extends RecyclerView.Adapter<AdapterChooseCity.ViewHolder> {
 
-    private ArrayList<String> data;
+    private ArrayList<String> data = new ArrayList<>();
     OnItemClicker onItemClicker;
 
-    public AdapterChooseCity(ArrayList<String> data, OnItemClicker onItemClicker) {
-        this.data = data;
+    public AdapterChooseCity(List<FavoriteCity> listData, OnItemClicker onItemClicker) {
+        for (FavoriteCity favoriteCity : listData) {
+            data.add(favoriteCity.city);
+        }
         this.onItemClicker = onItemClicker;
     }
 

@@ -1,4 +1,4 @@
-package badmitry.hellogeekbrains.room;
+package badmitry.hellogeekbrains.roomHistoryCities;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

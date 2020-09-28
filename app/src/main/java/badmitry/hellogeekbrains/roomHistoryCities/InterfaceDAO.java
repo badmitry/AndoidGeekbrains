@@ -1,4 +1,4 @@
-package badmitry.hellogeekbrains.room;
+package badmitry.hellogeekbrains.roomHistoryCities;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -12,6 +12,6 @@ public interface InterfaceDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCity(HistoryCity historyCity);
 
-    @Query("SELECT * FROM historycity")
+    @Query("SELECT * FROM HistoryCity")
     List<HistoryCity> getAllCity();
 }

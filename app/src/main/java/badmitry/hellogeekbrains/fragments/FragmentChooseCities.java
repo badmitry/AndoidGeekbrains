@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -17,20 +19,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterChooseCity;
 import badmitry.hellogeekbrains.adapterRLV.OnItemClicker;
+import badmitry.hellogeekbrains.roomFavoritesCities.FavoriteCity;
+import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesInterfaceDAO;
+import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesSource;
+import badmitry.hellogeekbrains.roomHistoryCities.App;
 
 public class FragmentChooseCities extends Fragment implements OnItemClicker {
 
     private EditText editTextInputCity;
+    private Button buttonAddToFavorites;
     private SingletonForSaveState singletonForSaveState;
     private RecyclerView recyclerView;
-    private ArrayList<String> listData = new ArrayList<>();
+    private List<FavoriteCity> listData = new ArrayList<>();
+    private FavoritesSource favoritesSource;
+    private FavoritesInterfaceDAO favoritesInterfaceDAO;
+    private AdapterChooseCity adapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Nullable
     @Override
@@ -43,6 +54,7 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initList();
+        setOnBtnAddToFavorites();
         setEditTextFromChoseCityBehavior();
     }
 
@@ -56,20 +68,48 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         singletonForSaveState = SingletonForSaveState.getInstance();
         editTextInputCity = view.findViewById(R.id.inputCity);
         recyclerView = view.findViewById(R.id.recycler_view);
+        buttonAddToFavorites = view.findViewById(R.id.button_add_to_favorites);
+        favoritesInterfaceDAO = App.getInstance().getFavoritesInterfaceDao();
+        favoritesSource = new FavoritesSource(favoritesInterfaceDAO);
+        listData = favoritesSource.getFavoritesCities();
     }
 
     private void initList() {
-        listData.addAll(Arrays.asList(getResources().getStringArray(R.array.cities)));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
-        AdapterChooseCity adapter = new AdapterChooseCity(listData, this);
+        listData = favoritesSource.getFavoritesCities();
+        linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
+        adapter = new AdapterChooseCity(listData, this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
 
+    private void updateList() {
+        listData = favoritesSource.getFavoritesCities();
+        adapter = new AdapterChooseCity(listData, this);
+        recyclerView.invalidate();
+    }
+
+    private void setOnBtnAddToFavorites() {
+        buttonAddToFavorites.setOnClickListener(view -> {
+            String text = editTextInputCity.getText().toString();
+            FavoriteCity favoriteCity = new FavoriteCity();
+            favoriteCity.city = text;
+            favoritesSource.addCity(favoriteCity);
+            initList();
+        });
+    }
+
     private void setEditTextFromChoseCityBehavior() {
         editTextInputCity.setOnKeyListener((view, i, keyEvent) -> {
-            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                     (i == KeyEvent.KEYCODE_ENTER)) {
+                String text = editTextInputCity.getText().toString();
+                changeCityOnMainLayout(text);
+                return true;
+            }
+            return false;
+        });
+        editTextInputCity.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_DONE) {
                 String text = editTextInputCity.getText().toString();
                 changeCityOnMainLayout(text);
                 return true;
