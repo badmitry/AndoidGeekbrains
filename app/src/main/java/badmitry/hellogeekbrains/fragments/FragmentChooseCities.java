@@ -18,29 +18,29 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import badmitry.hellogeekbrains.MainActivity;
 import badmitry.hellogeekbrains.R;
 import badmitry.hellogeekbrains.SingletonForSaveState;
 import badmitry.hellogeekbrains.adapterRLV.AdapterChooseCity;
+import badmitry.hellogeekbrains.adapterRLV.OnButtonDeleteClicker;
 import badmitry.hellogeekbrains.adapterRLV.OnItemClicker;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoriteCity;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesInterfaceDAO;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesSource;
 import badmitry.hellogeekbrains.roomHistoryCities.App;
 
-public class FragmentChooseCities extends Fragment implements OnItemClicker {
+public class FragmentChooseCities extends Fragment implements OnItemClicker, OnButtonDeleteClicker {
 
     private EditText editTextInputCity;
     private Button buttonAddToFavorites;
     private SingletonForSaveState singletonForSaveState;
     private RecyclerView recyclerView;
-    private List<FavoriteCity> listData = new ArrayList<>();
     private FavoritesSource favoritesSource;
     private FavoritesInterfaceDAO favoritesInterfaceDAO;
-    private AdapterChooseCity adapter;
     private LinearLayoutManager linearLayoutManager;
 
     @Nullable
@@ -63,6 +63,12 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         changeCityOnMainLayout(text);
     }
 
+    @Override
+    public void onButtonDeleteClick(String text) {
+        favoritesSource.deleteCity(text);
+        initList();
+    }
+
     private void initViews(@NonNull View view) {
         editTextInputCity = view.findViewById(R.id.inputCity);
         singletonForSaveState = SingletonForSaveState.getInstance();
@@ -70,22 +76,23 @@ public class FragmentChooseCities extends Fragment implements OnItemClicker {
         recyclerView = view.findViewById(R.id.recycler_view);
         buttonAddToFavorites = view.findViewById(R.id.button_add_to_favorites);
         favoritesInterfaceDAO = App.getInstance().getFavoritesInterfaceDao();
-        favoritesSource = new FavoritesSource(favoritesInterfaceDAO);
-        listData = favoritesSource.getFavoritesCities();
+        linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
     }
 
     private void initList() {
-        listData = favoritesSource.getFavoritesCities();
-        linearLayoutManager = new LinearLayoutManager(requireActivity().getBaseContext());
-        adapter = new AdapterChooseCity(listData, this);
+        Comparator comp = new Comparator<FavoriteCity>(){
+            @Override
+            public int compare(FavoriteCity s1, FavoriteCity s2)
+            {
+                return s1.city.compareTo(s2.city);
+            }
+        };
+        favoritesSource = new FavoritesSource(favoritesInterfaceDAO);
+        List<FavoriteCity> listData = favoritesSource.getFavoritesCities();
+        Collections.sort(listData, comp);
+        AdapterChooseCity adapter = new AdapterChooseCity(listData, this, this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-    }
-
-    private void updateList() {
-        listData = favoritesSource.getFavoritesCities();
-        adapter = new AdapterChooseCity(listData, this);
-        recyclerView.invalidate();
     }
 
     private void setOnBtnAddToFavorites() {

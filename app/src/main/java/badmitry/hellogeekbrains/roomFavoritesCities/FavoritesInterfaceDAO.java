@@ -14,4 +14,7 @@ public interface FavoritesInterfaceDAO {
 
     @Query("SELECT * FROM FavoriteCity")
     List<FavoriteCity> getAllCity();
+
+    @Query("DELETE FROM FavoriteCity WHERE city = :text")
+    void deleteCity(String text);
 }

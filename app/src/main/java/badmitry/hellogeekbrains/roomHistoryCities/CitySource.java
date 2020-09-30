@@ -24,4 +24,6 @@ public class CitySource {
     public void addCity(HistoryCity historyCity) {
         interfaceDAO.insertCity(historyCity);
     }
+
+    public void clearHistory() {interfaceDAO.clearHistory();}
 }

@@ -24,4 +24,8 @@ public class FavoritesSource {
     public void addCity(FavoriteCity favoriteCity) {
         favoritesInterfaceDAO.insertCity(favoriteCity);
     }
+
+    public void deleteCity(String text) {
+        favoritesInterfaceDAO.deleteCity(text);
+    }
 }

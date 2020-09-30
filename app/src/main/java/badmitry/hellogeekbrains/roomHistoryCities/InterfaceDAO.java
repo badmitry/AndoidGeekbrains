@@ -14,4 +14,7 @@ public interface InterfaceDAO {
 
     @Query("SELECT * FROM HistoryCity")
     List<HistoryCity> getAllCity();
+
+    @Query("DELETE FROM HistoryCity")
+    void clearHistory();
 }

@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private final String homeFragment = "HomeFragment";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private InterfaceDAO interfaceDAO;
+    private CitySource citySource;
 
 
     @SuppressLint("CommitPrefEdits")
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        interfaceDAO = App.getInstance().getInterfaceDao();
         setHomeFragment();
         setOnClickForSlideMenuItems();
         initNotificationChannel();
@@ -138,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.history: {
                 choseHistoryCity();
+                break;
+            }
+            case R.id.clear_history: {
+                clearHistoryCity();
                 break;
             }
             case R.id.developers: {
@@ -220,8 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void choseHistoryCity() {
         final int[] chosen = {-1};
-        InterfaceDAO interfaceDAO = App.getInstance().getInterfaceDao();
-        CitySource citySource = new CitySource(interfaceDAO);
+        citySource = new CitySource(interfaceDAO);
         List<HistoryCity> itemss = citySource.getHistoryCities();
         String CELSIUS = "\u2103";
         final String[] items = new String[itemss.size()];
@@ -249,5 +255,10 @@ public class MainActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void clearHistoryCity() {
+        citySource = new CitySource(interfaceDAO);
+        citySource.clearHistory();
     }
 }
