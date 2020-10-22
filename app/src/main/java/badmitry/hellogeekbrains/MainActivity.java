@@ -33,7 +33,6 @@ import badmitry.hellogeekbrains.fragments.FragmentDevelopers;
 import badmitry.hellogeekbrains.fragments.FragmentMap;
 import badmitry.hellogeekbrains.fragments.FragmentSettings;
 import badmitry.hellogeekbrains.fragments.FragmentWeather;
-import badmitry.hellogeekbrains.roomHistoryCities.App;
 import badmitry.hellogeekbrains.roomHistoryCities.CitySource;
 import badmitry.hellogeekbrains.roomHistoryCities.HistoryCity;
 import badmitry.hellogeekbrains.roomHistoryCities.InterfaceDAO;

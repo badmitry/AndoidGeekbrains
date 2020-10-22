@@ -49,7 +49,7 @@ public class LocTracker {
             locationListener = new LocListener();
         }
         LocationManager mLocManager = singletonForSaveState.getLocationManager();
-        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000L, 10000, locationListener);
+        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1000, locationListener);
         try {
             loc = mLocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } catch (Exception e) {

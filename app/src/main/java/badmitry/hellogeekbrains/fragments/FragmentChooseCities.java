@@ -31,7 +31,7 @@ import badmitry.hellogeekbrains.adapterRLV.OnItemClicker;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoriteCity;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesInterfaceDAO;
 import badmitry.hellogeekbrains.roomFavoritesCities.FavoritesSource;
-import badmitry.hellogeekbrains.roomHistoryCities.App;
+import badmitry.hellogeekbrains.App;
 
 public class FragmentChooseCities extends Fragment implements OnItemClicker, OnButtonDeleteClicker {
 

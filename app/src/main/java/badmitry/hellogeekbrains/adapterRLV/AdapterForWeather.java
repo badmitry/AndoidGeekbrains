@@ -66,7 +66,7 @@ public class AdapterForWeather extends RecyclerView.Adapter<AdapterForWeather.Vi
             imageViewWeather = item.findViewById(R.id.imageViewWeather);
             date = item.findViewById(R.id.date);
             dayOfWeek = item.findViewById(R.id.dayOfWeak);
-            simpleDateFormat = new SimpleDateFormat("dd-MM:");
+            simpleDateFormat = new SimpleDateFormat("dd.MM");
         }
 
         @SuppressLint("SetTextI18n")
