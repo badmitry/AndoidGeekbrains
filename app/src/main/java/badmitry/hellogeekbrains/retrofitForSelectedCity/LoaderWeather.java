@@ -40,7 +40,7 @@ public class LoaderWeather {
                     singletonForSaveState.getArrayList().add(new String[]{temp, weatherRequest.weather[0].icon});
                     weatherRepo.getApiForecastForSelectedCity().loadWeather(singletonForSaveState.getCity(),
                             singletonForSaveState.getFragmentWeather().getString(R.string.lang),
-                            "c0c4a4b4047b97ebc5948ac9c48c0559").enqueue(new Callback<WeatherForecastRequest>() {
+                            "94b18bc70bd073ad490a67a7c6ceb146").enqueue(new Callback<WeatherForecastRequest>() {
                         @Override
                         public void onResponse(@NonNull Call<WeatherForecastRequest> call, @NonNull Response<WeatherForecastRequest> response) {
                             if (response.body() != null && response.isSuccessful()) {
@@ -107,7 +107,7 @@ public class LoaderWeather {
                     singletonForSaveState.getArrayList().add(new String[]{temp, weatherRequest.weather[0].icon});
                     weatherRepo.getApiForecastForCurrentCity().loadWeather(lon, lat,
                             singletonForSaveState.getFragmentWeather().getString(R.string.lang),
-                            "c0c4a4b4047b97ebc5948ac9c48c0559").enqueue(new Callback<WeatherForecastRequest>() {
+                            "94b18bc70bd073ad490a67a7c6ceb146").enqueue(new Callback<WeatherForecastRequest>() {
                         @Override
                         public void onResponse(@NonNull Call<WeatherForecastRequest> call, @NonNull Response<WeatherForecastRequest> response) {
                             if (response.body() != null && response.isSuccessful()) {
